@@ -1,0 +1,13 @@
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\CosmosGL.Hal.deps.json
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\CosmosGL.Hal.dll
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\CosmosGL.Hal.pdb
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\Cosmos.Core.dll
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\Cosmos.Debug.Kernel.dll
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\Cosmos.Core.pdb
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\bin\Debug\netstandard2.0\Cosmos.Debug.Kernel.pdb
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.csprojResolveAssemblyReference.cache
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.csproj.CoreCompileInputs.cache
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.AssemblyInfoInputs.cache
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.AssemblyInfo.cs
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.dll
+C:\Users\Emile\Documents\GitHub\CosmosGL\CosmosGL.Hal\obj\Debug\netstandard2.0\CosmosGL.Hal.pdb
