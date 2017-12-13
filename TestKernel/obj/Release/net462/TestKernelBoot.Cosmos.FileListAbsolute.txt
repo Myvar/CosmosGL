@@ -1,2 +1,0 @@
-C:\Users\Emile\Documents\GitHub\CosmosGL\TestKernel\obj\Release\net462\TestKernelBoot.CosmosResolveAssemblyReference.cache
-C:\Users\Emile\Documents\GitHub\CosmosGL\TestKernel\obj\Release\net462\TestKernelBoot.Cosmos.CoreCompileInputs.cache
