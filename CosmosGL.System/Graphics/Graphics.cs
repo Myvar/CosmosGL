@@ -456,13 +456,25 @@ namespace CosmosGL.System.Graphics
             var p = new TpplPartition();
             p.Triangulate_EC(polly, outlist);
 
-            foreach (var tpplPoly in outlist)
-            {
-                    var a = tpplPoly.Points[0];
-                    var b = tpplPoly.Points[1];
-                    var v = tpplPoly.Points[2];
 
-                    FillTriangle(0,0, new Point((int)a.X, (int)a.Y), new Point((int)b.X, (int)b.Y), new Point((int)v.X, (int)v.Y), c);
+            //for debugging
+            var colors = new Color[]
+            {
+                Colors.Red,
+                Colors.Blue
+            };
+
+
+            for (var index = 0; index < outlist.Count; index++)
+            {
+                var tpplPoly = outlist[index];
+                var a = tpplPoly.Points[0];
+                var b = tpplPoly.Points[1];
+                var v = tpplPoly.Points[2];
+
+                FillTriangle(0, 0, new Point((int) a.X, (int) a.Y), new Point((int) b.X, (int) b.Y),
+                    new Point((int) v.X, (int) v.Y),
+                    c);
             }
         }
 

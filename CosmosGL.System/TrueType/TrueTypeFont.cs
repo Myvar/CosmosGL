@@ -94,7 +94,7 @@ namespace CosmosGL.System.TrueType
 
         public void ReadHeadTable()
         {
-            _file.Seek((int)GetTable("head").Offset);
+            _file.Seek((int) GetTable("head").Offset);
 
             Version = _file.GetFixed();
             FontRevision = _file.GetFixed();
@@ -117,7 +117,7 @@ namespace CosmosGL.System.TrueType
 
         public int GlyphCount()
         {
-            var old = _file.Seek((int)(GetTable("maxp").Offset + 4));
+            var old = _file.Seek((int) (GetTable("maxp").Offset + 4));
             var count = _file.GetUint16();
             _file.Seek(old);
             return count;
@@ -131,18 +131,18 @@ namespace CosmosGL.System.TrueType
 
             if (IndexToLocFormat == 1)
             {
-                old = _file.Seek((int)(table.Offset + index * 4));
-                offset = (int)_file.GetUint32();
+                old = _file.Seek((int) (table.Offset + index * 4));
+                offset = (int) _file.GetUint32();
             }
             else
             {
-                old = _file.Seek((int)(table.Offset + index * 2));
+                old = _file.Seek((int) (table.Offset + index * 2));
                 offset = _file.GetUint16() * 2;
             }
 
             _file.Seek(old);
 
-            return (int)(offset + GetTable("glyf").Offset);
+            return (int) (offset + GetTable("glyf").Offset);
         }
 
         public List<Glyph> ReadGlyphs(int start, int count)
@@ -378,12 +378,10 @@ namespace CosmosGL.System.TrueType
             }
         }
 
-     
-        public bool DrawGlyph(Graphics.Graphics gr, int index, float scalex, float scaley, int translatex, int translatey)
+
+        public bool DrawGlyph(Graphics.Graphics gr, int index, float scalex, float scaley, int translatex,
+            int translatey)
         {
-
-
-
             var glyph = ReadGlyph(index);
 
             if (glyph == null || glyph.Type != "simple")
@@ -393,93 +391,41 @@ namespace CosmosGL.System.TrueType
 
 
             var c = 0;
-
-            var firstx = 0;
-            var firsty = 0;
-
-            bool flag = false;
+            var last = 0;
+            
 
             var path = new List<CosmosGL.System.Graphics.Point>();
 
             for (var i = 0; i < glyph.Points.Count; i++)
             {
+                var glyphPointA = glyph.Points[i];
+
+
+                var x1 = (scalex * glyphPointA["x"]) + translatex;
+                var y1 = (scaley * glyphPointA["y"]) + translatey;
+
+
+                path.Add(new Graphics.Point((int) x1, (int) y1));
+
                 if (i == glyph.ContourEnds[c])
                 {
                     c += 1;
                     i++;
 
-                    if (c > 1)
-                    {
-                        //path.Reverse();
-                    }
-                    gr.FillPath(path.ToArray(), Colors.Black);
-                    
+                   
 
+                   // path.Add(path[last]);
+
+                    gr.DrawPolygon(path.ToArray(), Colors.Black);
                     path.Clear();
+
+                    // last = i;
                 }
-
-
-                else
-                {
-
-                    var glyphPointA = glyph.Points[i];
-
-
-
-                    var x1 = (scalex * glyphPointA["x"]) + translatex;
-                    var y1 = (scaley * glyphPointA["y"]) + translatey;
-
-
-                    path.Add(new Graphics.Point((int) x1, (int) y1));
-                }
-
-
             }
-           if(path.Count > 0) gr.FillPolygon(path.ToArray(), Colors.Black);
+           
 
 
-            /* 
-                var p = 0;
-            var c = 0;
-            var first = 1;
 
-            var startX = 0;
-            var startY = 0;
-              while (p < glyph.Points.Count)
-              {
-                  var point = glyph.Points[p];
-                  if (first == 1)
-                  {
-                      startX = point["x"];
-                      startY = point["y"];
-                      first = 0;
-                  }
-                  else
-                  {
-  
-                      var x1 = scalex * (startX + translatex);
-                      var y1 = scaley * (startY + translatey);
-  
-                      var x2 = scalex * (point["x"] + translatex);
-                      var y2 = scaley * (point["y"] + translatey);
-  
-                      Console.WriteLine($"(scalex: {scalex}, trasx: {translatex}) x1: {x1}, y1: {y1} | x2: {x2}, y2: {y2}");
-  
-                      DrawLine(screen, (int) x1, (int) y1, (int) x2 , (int) y2, (uint) (p * 20));
-  
-                      startX = point["x"];
-                      startY = point["y"];
-  
-                  }
-  
-                  if (p == glyph.ContourEnds[c])
-                  {
-                      c += 1;
-                      first = 1;
-                  }
-  
-                  p += 1;
-              }*/
 
             return true;
         }
