@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CosmosGL.System.Fonts;
+﻿using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
 using CosmosGL.System.TrueType;
 
-namespace WinDebugFrm
+namespace TestKernel
 {
     public static class FontTest
     {
@@ -28,7 +23,7 @@ namespace WinDebugFrm
 
                 font.DrawGlyph(gr, i, scale, -scale, x,  (int) (y + ((font.YMax - font.YMin) * scale)) );
                 x += (int)(scale * g.XMax) + 5;
-
+                gr.Flush();
                 if (c > 30)
                 {
                     y += (int)(scale * g.YMax) + 40;

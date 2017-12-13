@@ -410,20 +410,18 @@ namespace CosmosGL.System.TrueType
                 if (i == glyph.ContourEnds[c])
                 {
                     c += 1;
-                    i++;
-
-                   
-
-                   // path.Add(path[last]);
-
+                 
                     gr.DrawPolygon(path.ToArray(), Colors.Black);
                     path.Clear();
+
+                    //path.Add(path[last]);
+
 
                     // last = i;
                 }
             }
-           
 
+          
 
 
 

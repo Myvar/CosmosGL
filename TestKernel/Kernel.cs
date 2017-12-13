@@ -30,32 +30,6 @@ namespace TestKernel
             Canvas.WriteToScreen();
         }
 
-//        public void FontTest(Graphics gr)
-//        {
-//            var font = new TrueTypeFont(Cairo.CairoRegular_ttf);
-//
-//            float scale = 64f / font.UnitsPerEm;
-//
-//            var y = 200;
-//            var x = 200;
-//
-//            int c = 0;
-//
-//            for (int i = 25; i < 26; i++)
-//            {
-//                var g = font.ReadGlyph(5);
-//
-//                font.DrawGlyph(gr, i, scale, scale, x, y);
-//                x += g.XMax + 5;
-//
-//                if (c > 15)
-//                {
-//                    y += 200;
-//                    c = 0;
-//                }
-//                c++;
-//            }
-//        }
 
         int _frames = 0;
         int _fps = 0;
@@ -73,14 +47,7 @@ namespace TestKernel
             _frames++;
 
             var g = new Graphics(Canvas);
-            g.Clear(Colors.Red);
-
-            //test code
-
-            //FontTest(g);
-
-
-            //g.IncludeClip(50, 50, 100, 100);
+            g.Clear(Colors.DarkCyan);
 
             g.FillRectangle(10, 20, 50, 50, Colors.Green);
 
@@ -98,13 +65,14 @@ namespace TestKernel
             }, Colors.Aqua);
 
 
-            /*   g.FillPolygon(new Point[]
-             {
-                 new Point(300,300),
-                 new Point(350,300),
-                 new Point(350,350),
-             }, Colors.Beige);
-             */
+            g.FillPolygon(new Point[]
+            {
+                new Point(300, 300),
+                new Point(350, 300),
+                new Point(350, 350),
+            }, Colors.Beige);
+
+
             g.DrawPolygon(new Point[]
             {
                 new Point(300, 300),
@@ -112,7 +80,14 @@ namespace TestKernel
                 new Point(350, 350),
             }, Colors.Red);
 
-            //g.FillRectangle(25, 35, 100, 100, new Color(Colors.Red, 128));
+            g.FillPolygon(new Point[]
+            {
+                new Point(400, 300),
+                new Point(450, 300),
+                new Point(450, 450),
+                new Point(500, 450),
+            }, Colors.Beige);
+            
 
             Canvas.WriteToScreen();
         }
