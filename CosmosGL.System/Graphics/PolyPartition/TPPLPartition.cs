@@ -31,31 +31,31 @@ using tppl_float = System.Single;
 
 namespace PolyPartition
 {
-    public class TPPLPartition
+    public class TpplPartition
     {
         protected class PartitionVertex
         {
-            public bool isActive;
-            public bool isConvex;
-            public bool isEar;
+            public bool IsActive;
+            public bool IsConvex;
+            public bool IsEar;
 
-            public TPPLPoint p;
-            public tppl_float angle;
+            public TpplPoint P;
+            public tppl_float Angle;
 
-            public PartitionVertex previous;
-            public PartitionVertex next;
+            public PartitionVertex Previous;
+            public PartitionVertex Next;
         }
 
         protected struct MonotoneVertex
         {
-            public TPPLPoint p;
-            public int previous;
-            public int next;
+            public TpplPoint P;
+            public int Previous;
+            public int Next;
         }
 
         protected class VertexSorter : IComparer<MonotoneVertex>
         {
-            public List<MonotoneVertex> vertices;
+            public List<MonotoneVertex> Vertices;
 
             public int Compare(MonotoneVertex x, MonotoneVertex y)
             {
@@ -65,49 +65,49 @@ namespace PolyPartition
 
         protected struct Diagonal
         {
-            public int index1;
-            public int index2;
+            public int Index1;
+            public int Index2;
         }
 
-        protected struct DPState
+        protected struct DpState
         {
-            public bool visible;
-            public tppl_float weight;
-            public int bestvertex;
+            public bool Visible;
+            public tppl_float Weight;
+            public int Bestvertex;
         }
 
         protected struct ScanLineEdge
         {
-            public int index;
+            public int Index;
 
-            public TPPLPoint p1;
-            public TPPLPoint p2;
+            public TpplPoint P1;
+            public TpplPoint P2;
 
             public static bool operator < (ScanLineEdge lhs, ScanLineEdge rhs)
             {
-                if (rhs.p1.Y == rhs.p2.Y)
+                if (rhs.P1.Y == rhs.P2.Y)
                 {
-                    if (lhs.p1.Y == lhs.p2.Y)
+                    if (lhs.P1.Y == lhs.P2.Y)
                     {
-                        if (lhs.p1.Y < rhs.p1.Y) return true;
+                        if (lhs.P1.Y < rhs.P1.Y) return true;
                         else return false;
                     }
-                    if (IsConvex(lhs.p1, lhs.p2, rhs.p1)) return true;
+                    if (IsConvex(lhs.P1, lhs.P2, rhs.P1)) return true;
                     else return false;
                 }
-                else if (lhs.p1.Y == lhs.p2.Y)
+                else if (lhs.P1.Y == lhs.P2.Y)
                 {
-                    if (IsConvex(rhs.p1, rhs.p2, lhs.p1)) return false;
+                    if (IsConvex(rhs.P1, rhs.P2, lhs.P1)) return false;
                     else return true;
                 }
-                else if (lhs.p1.Y < rhs.p1.Y)
+                else if (lhs.P1.Y < rhs.P1.Y)
                 {
-                    if (IsConvex(rhs.p1, rhs.p2, lhs.p1)) return false;
+                    if (IsConvex(rhs.P1, rhs.P2, lhs.P1)) return false;
                     else return true;
                 }
                 else
                 {
-                    if (IsConvex(lhs.p1, lhs.p2, rhs.p1)) return true;
+                    if (IsConvex(lhs.P1, lhs.P2, rhs.P1)) return true;
                     else return false;
                 }
             }
@@ -117,7 +117,7 @@ namespace PolyPartition
                 throw new NotImplementedException();
             }
 
-            public static bool IsConvex(TPPLPoint p1, TPPLPoint p2, TPPLPoint p3)
+            public static bool IsConvex(TpplPoint p1, TpplPoint p2, TpplPoint p3)
             {
                 tppl_float tmp;
                 tmp = (p3.Y - p1.Y) * (p2.X - p1.X) - (p3.X - p1.X) * (p2.Y - p1.Y);
@@ -133,7 +133,7 @@ namespace PolyPartition
             }
         }
 
-        protected bool IsConvex(TPPLPoint p1, TPPLPoint p2, TPPLPoint p3)
+        protected bool IsConvex(TpplPoint p1, TpplPoint p2, TpplPoint p3)
         {
             tppl_float tmp;
             tmp = (p3.Y - p1.Y) * (p2.X - p1.X) - (p3.X - p1.X) * (p2.Y - p1.Y);
@@ -148,7 +148,7 @@ namespace PolyPartition
             }
         }
 
-        protected bool IsReflex(TPPLPoint p1, TPPLPoint p2, TPPLPoint p3)
+        protected bool IsReflex(TpplPoint p1, TpplPoint p2, TpplPoint p3)
         {
             tppl_float tmp;
             tmp = (p3.Y - p1.Y) * (p2.X - p1.X) - (p3.X - p1.X) * (p2.Y - p1.Y);
@@ -163,7 +163,7 @@ namespace PolyPartition
             }
         }
 
-        protected bool IsInside(TPPLPoint p1, TPPLPoint p2, TPPLPoint p3, TPPLPoint p)
+        protected bool IsInside(TpplPoint p1, TpplPoint p2, TpplPoint p3, TpplPoint p)
         {
             if (IsConvex(p1, p, p2)) return false;
             if (IsConvex(p2, p, p3)) return false;
@@ -171,7 +171,7 @@ namespace PolyPartition
             return true;
         }
 
-        protected bool InCone(TPPLPoint p1, TPPLPoint p2, TPPLPoint p3, TPPLPoint p)
+        protected bool InCone(TpplPoint p1, TpplPoint p2, TpplPoint p3, TpplPoint p)
         {
             bool convex;
 
@@ -191,45 +191,45 @@ namespace PolyPartition
             }
         }
 
-        protected bool InCone(PartitionVertex v, TPPLPoint p)
+        protected bool InCone(PartitionVertex v, TpplPoint p)
         {
-            TPPLPoint p1, p2, p3;
+            TpplPoint p1, p2, p3;
 
-            p1 = v.previous.p;
-            p2 = v.p;
-            p3 = v.next.p;
+            p1 = v.Previous.P;
+            p2 = v.P;
+            p3 = v.Next.P;
 
             return InCone(p1, p2, p3, p);
         }
 
-        protected int Intersects(TPPLPoint p11, TPPLPoint p12, TPPLPoint p21, TPPLPoint p22)
+        protected int Intersects(TpplPoint p11, TpplPoint p12, TpplPoint p21, TpplPoint p22)
         {
             if ((p11.X == p21.X) && (p11.Y == p21.Y)) return 0;
             if ((p11.X == p22.X) && (p11.Y == p22.Y)) return 0;
             if ((p12.X == p21.X) && (p12.Y == p21.Y)) return 0;
             if ((p12.X == p22.X) && (p12.Y == p22.Y)) return 0;
 
-            TPPLPoint v1ort = new TPPLPoint(), 
-                      v2ort = new TPPLPoint(),
-                      v = new TPPLPoint();
+            TpplPoint v1Ort = new TpplPoint(), 
+                      v2Ort = new TpplPoint(),
+                      v = new TpplPoint();
 
             tppl_float dot11, dot12, dot21, dot22;
 
-            v1ort.X = p12.Y - p11.Y;
-            v1ort.Y = p11.X - p12.X;
+            v1Ort.X = p12.Y - p11.Y;
+            v1Ort.Y = p11.X - p12.X;
 
-            v2ort.X = p22.Y - p21.Y;
-            v2ort.Y = p21.X - p22.X;
+            v2Ort.X = p22.Y - p21.Y;
+            v2Ort.Y = p21.X - p22.X;
 
             v = p21 - p11;
-            dot21 = v.X * v1ort.X + v.Y * v1ort.Y;
+            dot21 = v.X * v1Ort.X + v.Y * v1Ort.Y;
             v = p22 - p11;
-            dot22 = v.X * v1ort.X + v.Y * v1ort.Y;
+            dot22 = v.X * v1Ort.X + v.Y * v1Ort.Y;
 
             v = p11 - p21;
-            dot11 = v.X * v2ort.X + v.Y * v2ort.Y;
+            dot11 = v.X * v2Ort.X + v.Y * v2Ort.Y;
             v = p12 - p21;
-            dot12 = v.X * v2ort.X + v.Y * v2ort.Y;
+            dot12 = v.X * v2Ort.X + v.Y * v2Ort.Y;
 
             if (dot11 * dot12 > 0) return 0;
             if (dot21 * dot22 > 0) return 0;
@@ -237,9 +237,9 @@ namespace PolyPartition
             return 1;
         }
 
-        TPPLPoint Normalize(TPPLPoint p)
+        TpplPoint Normalize(TpplPoint p)
         {
-            TPPLPoint r = new TPPLPoint();
+            TpplPoint r = new TpplPoint();
             tppl_float n = (tppl_float)Math.Sqrt(p.X * p.X + p.Y * p.Y);
             
             if (n != (tppl_float)0)
@@ -255,7 +255,7 @@ namespace PolyPartition
             return r;
         }
 
-        protected tppl_float Distance(TPPLPoint p1, TPPLPoint p2)
+        protected tppl_float Distance(TpplPoint p1, TpplPoint p2)
         {
             tppl_float dx, dy;
 
@@ -269,58 +269,58 @@ namespace PolyPartition
         {
             PartitionVertex v1 = null, v3 = null;
 
-            v1 = v.previous;
-            v3 = v.next;
+            v1 = v.Previous;
+            v3 = v.Next;
 
-            v.isConvex = !IsReflex(v1.p, v.p, v3.p);
+            v.IsConvex = !IsReflex(v1.P, v.P, v3.P);
         }
 
         protected void UpdateVertex(PartitionVertex v, List<PartitionVertex> vertices)
         {
             int i;
             PartitionVertex v1 = null, v3 = null;
-            TPPLPoint vec1, vec3;
+            TpplPoint vec1, vec3;
 
-            v1 = v.previous;
-            v3 = v.next;
+            v1 = v.Previous;
+            v3 = v.Next;
 
-            v.isConvex = IsConvex(v1.p, v.p, v3.p);
+            v.IsConvex = IsConvex(v1.P, v.P, v3.P);
 
-            vec1 = Normalize(v1.p - v.p);
-            vec3 = Normalize(v3.p - v.p);
+            vec1 = Normalize(v1.P - v.P);
+            vec3 = Normalize(v3.P - v.P);
 
-            v.angle = vec1.X * vec3.X + vec1.Y * vec3.Y;
+            v.Angle = vec1.X * vec3.X + vec1.Y * vec3.Y;
 
-            if (v.isConvex)
+            if (v.IsConvex)
             {
-                v.isEar = true;
+                v.IsEar = true;
 
                 int numvertices = vertices.Count;
                 for (i = 0; i < numvertices; i++)
                 {
-                    if ((vertices[i].p.X == v.p.X) && (vertices[i].p.Y == v.p.Y)) continue;
-                    if ((vertices[i].p.X == v1.p.X) && (vertices[i].p.Y == v1.p.Y)) continue;
-                    if ((vertices[i].p.X == v3.p.X) && (vertices[i].p.Y == v3.p.Y)) continue;
-                    if (IsInside(v1.p, v.p, v3.p, vertices[i].p))
+                    if ((vertices[i].P.X == v.P.X) && (vertices[i].P.Y == v.P.Y)) continue;
+                    if ((vertices[i].P.X == v1.P.X) && (vertices[i].P.Y == v1.P.Y)) continue;
+                    if ((vertices[i].P.X == v3.P.X) && (vertices[i].P.Y == v3.P.Y)) continue;
+                    if (IsInside(v1.P, v.P, v3.P, vertices[i].P))
                     {
-                        v.isEar = false;
+                        v.IsEar = false;
                         break;
                     }
                 }
             }
             else
             {
-                v.isEar = false;
+                v.IsEar = false;
             }
         }
 
-        public int Triangulate_EC(TPPLPoly poly, List<TPPLPoly> triangles)
+        public int Triangulate_EC(TpplPoly poly, List<TpplPoly> triangles)
         {
             int numvertices;
             List<PartitionVertex> vertices = null;
             PartitionVertex ear = null;
 
-            TPPLPoly triangle = new TPPLPoly();
+            TpplPoly triangle = new TpplPoly();
 
             int i, j;
             bool earfound;
@@ -343,12 +343,12 @@ namespace PolyPartition
 
             for (i = 0; i < numvertices; i++)
             {
-                vertices[i].isActive = true;
-                vertices[i].p = poly[i];
-                if (i == (numvertices - 1)) vertices[i].next = vertices[0];
-                else vertices[i].next = vertices[i + 1];
-                if (i == 0) vertices[i].previous = vertices[numvertices - 1];
-                else vertices[i].previous = vertices[i - 1];
+                vertices[i].IsActive = true;
+                vertices[i].P = poly[i];
+                if (i == (numvertices - 1)) vertices[i].Next = vertices[0];
+                else vertices[i].Next = vertices[i + 1];
+                if (i == 0) vertices[i].Previous = vertices[numvertices - 1];
+                else vertices[i].Previous = vertices[i - 1];
             }
 
             for (i = 0; i < numvertices; i++)
@@ -362,8 +362,8 @@ namespace PolyPartition
                 //find the most extruded ear
                 for (j = 0; j < numvertices; j++)
                 {
-                    if (!vertices[j].isActive) continue;
-                    if (!vertices[j].isEar) continue;
+                    if (!vertices[j].IsActive) continue;
+                    if (!vertices[j].IsEar) continue;
                     if (!earfound)
                     {
                         earfound = true;
@@ -371,7 +371,7 @@ namespace PolyPartition
                     }
                     else
                     {
-                        if (vertices[j].angle > ear.angle)
+                        if (vertices[j].Angle > ear.Angle)
                         {
                             ear = vertices[j];
                         }
@@ -383,24 +383,24 @@ namespace PolyPartition
                     return 0;
                 }
 
-                triangle = new TPPLPoly(ear.previous.p, ear.p, ear.next.p);
+                triangle = new TpplPoly(ear.Previous.P, ear.P, ear.Next.P);
                 triangles.Add(triangle);
 
-                ear.isActive = false;
-                ear.previous.next = ear.next;
-                ear.next.previous = ear.previous;
+                ear.IsActive = false;
+                ear.Previous.Next = ear.Next;
+                ear.Next.Previous = ear.Previous;
 
                 if (i == numvertices - 4) break;
 
-                UpdateVertex(ear.previous, vertices);
-                UpdateVertex(ear.next, vertices);
+                UpdateVertex(ear.Previous, vertices);
+                UpdateVertex(ear.Next, vertices);
             }
 
             for (i = 0; i < numvertices; i++)
             {
-                if (vertices[i].isActive)
+                if (vertices[i].IsActive)
                 {
-                    triangle = new TPPLPoly(vertices[i].previous.p, vertices[i].p, vertices[i].next.p);
+                    triangle = new TpplPoly(vertices[i].Previous.P, vertices[i].P, vertices[i].Next.P);
                     triangles.Add(triangle);
                     break;
                 }

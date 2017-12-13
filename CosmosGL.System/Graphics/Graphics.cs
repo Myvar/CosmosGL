@@ -1,40 +1,116 @@
 ﻿using System;
 using System.Collections.Generic;
+using CosmosGL.System.Graphics.Rasterizing;
 using PolyPartition;
 
 namespace CosmosGL.System.Graphics
 {
     public class Graphics
     {
-        private Canvas _canvas;
+        private ICanvas _canvas;
+        private Rectangle Container { get; set; }
+        private Rectangle ClipRectangle { get; set; }
+        private bool ContainerFlag { get; set; }
+        private bool ClipingFlag { get; set; }
+        private bool ClipingIsInclude { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
 
-        public Graphics(Canvas canvas)
+
+        public Graphics(ICanvas canvas)
         {
             _canvas = canvas;
+            Height = canvas.Height;
+            Width = canvas.Height;
+
+            Container = new Rectangle(0, 0, canvas.Width, canvas.Height);
+            ContainerFlag = false;
         }
 
         #region Internals
 
-        public void SetPixel(int x, int y, Color c)
+        private uint Blend(uint color1, uint color2, byte alpha)
+        {
+            uint rb = color1 & 0xff00ff;
+            uint g = color1 & 0x00ff00;
+            rb += ((color2 & 0xff00ff) - rb) * alpha >> 8;
+            g += ((color2 & 0x00ff00) - g) * alpha >> 8;
+            return (rb & 0xff00ff) | (g & 0xff00);
+        }
+
+        private void SetPixel(int x, int y, Color c)
         {
             if (c.A != 255)
             {
                 //transparency needed
-                var p = 1 - c.A;
-                var C2 = _canvas.GetPixel(x, y);
+                var cn = new Color((int) Blend((uint) _canvas.GetPixel(x, y).ToHex(), (uint) c.ToHex(), (byte) c.A));
 
-                float alpha = c.A / 255f;
-                float oneminusalpha = 1 - alpha;
 
-                var newR = ((c.R * alpha) + (oneminusalpha * C2.R));
-                var newG = ((c.G * alpha) + (oneminusalpha * C2.G));
-                var newB = ((c.B * alpha) + (oneminusalpha * C2.B));
-
-                _canvas.SetPixel(x, y, new Color((byte) newR, (byte) newG, (byte) newB));
+                if (ContainerFlag)
+                {
+                    if (Container.Intersects(x, y))
+                    {
+                        _canvas.SetPixel(x, y, cn);
+                    }
+                }
+                else
+                {
+                    if (ClipingFlag)
+                    {
+                        if (ClipingIsInclude)
+                        {
+                            if (ClipRectangle.Intersects(x, y))
+                            {
+                                _canvas.SetPixel(x, y, cn);
+                            }
+                        }
+                        else
+                        {
+                            if (!ClipRectangle.Intersects(x, y))
+                            {
+                                _canvas.SetPixel(x, y, cn);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _canvas.SetPixel(x, y, cn);
+                    }
+                }
             }
             else
             {
-                _canvas.SetPixel(x, y, c);
+                if (ContainerFlag)
+                {
+                    if (Container.Intersects(x, y))
+                    {
+                        _canvas.SetPixel(x, y, c);
+                    }
+                }
+                else
+                {
+                    if (ClipingFlag)
+                    {
+                        if (ClipingIsInclude)
+                        {
+                            if (ClipRectangle.Intersects(x, y))
+                            {
+                                _canvas.SetPixel(x, y, c);
+                            }
+                        }
+                        else
+                        {
+                            if (!ClipRectangle.Intersects(x, y))
+                            {
+                                _canvas.SetPixel(x, y, c);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _canvas.SetPixel(x, y, c);
+                    }
+                }
             }
         }
 
@@ -42,9 +118,10 @@ namespace CosmosGL.System.Graphics
 
         #region Containers
 
-        public void SetContainer()
+        public void SetContainer(int x, int y, int w, int h)
         {
-            /* TODO */
+            ContainerFlag = true;
+            Container = new Rectangle(x, y, w, h);
         }
 
         #endregion
@@ -241,14 +318,104 @@ namespace CosmosGL.System.Graphics
             }
         }
 
-        public void FillPath()
+
+        private void ScanConvertTriangle(List<MinMaxPair> scanBuffer, Point minYVert, Point midYVert,
+            Point maxYVert, int handedness)
         {
-            /* TODO */
+            ScanConvertLine(scanBuffer, minYVert, maxYVert, 0 + handedness);
+            ScanConvertLine(scanBuffer, minYVert, midYVert, 1 - handedness);
+            ScanConvertLine(scanBuffer, midYVert, maxYVert, 1 - handedness);
         }
 
-        public void FillPolygon(Point[] points, Color c)
+        private void ScanConvertLine(List<MinMaxPair> scanBuffer, Point minYVert, Point maxYVert, int whichSide)
         {
-            var polly = new TPPLPoly(points.Length);
+            int yStart = (int) minYVert.Y;
+            int yEnd = (int) maxYVert.Y;
+            int xStart = (int) minYVert.X;
+            int xEnd = (int) maxYVert.X;
+
+            int yDist = yEnd - yStart;
+            int xDist = xEnd - xStart;
+
+            if (yDist <= 0)
+            {
+                return;
+            }
+
+            float xStep = (float) xDist / (float) yDist;
+            float curX = (float) xStart;
+
+            for (int j = yStart; j < yEnd; j++)
+            {
+                
+                if (whichSide == 0)
+                {
+                    scanBuffer[j].Min = (int) curX;
+                }
+                else
+                {
+                    scanBuffer[j].Max = (int) curX;
+                }
+
+                curX += xStep;
+            }
+        }
+
+
+        public void FillTriangle(int x, int y, Point v0, Point v1, Point v2, Color c)
+        {
+            var scanBuffer = new List<MinMaxPair>();
+
+            for (int i = 0; i < _canvas.Height; i++)
+            {
+                scanBuffer.Add(new MinMaxPair(0, 0));
+            }
+
+            Point minYVert = v0;
+            Point midYVert = v1;
+            Point maxYVert = v2;
+
+            if (maxYVert.Y < midYVert.Y)
+            {
+                Point temp = maxYVert;
+                maxYVert = midYVert;
+                midYVert = temp;
+            }
+
+            if (midYVert.Y < minYVert.Y)
+            {
+                Point temp = midYVert;
+                midYVert = minYVert;
+                minYVert = temp;
+            }
+
+            if (maxYVert.Y < midYVert.Y)
+            {
+                Point temp = maxYVert;
+                maxYVert = midYVert;
+                midYVert = temp;
+            }
+
+            float area = minYVert.TriangleArea(maxYVert, midYVert);
+            int handedness = area >= 0 ? 1 : 0;
+
+            ScanConvertTriangle(scanBuffer, minYVert, midYVert, maxYVert, handedness);
+
+
+            for (var j = 0; j < scanBuffer.Count; j++)
+            {
+                var minMaxPair = scanBuffer[j];
+                for (int i = minMaxPair.Min; i < minMaxPair.Max; i++)
+                {
+                    SetPixel(x + i, y + j, c);
+                }
+            }
+        }
+
+
+        public void FillPath(Point[] points, Color c)
+        {
+            var polly = new TpplPoly(points.Length);
 
             for (int i = 0; i < points.Length; i++)
             {
@@ -256,20 +423,46 @@ namespace CosmosGL.System.Graphics
                 polly[i].Y = points[i].Y;
             }
 
-            var outlist = new List<TPPLPoly>();
+            var outlist = new List<TpplPoly>();
 
-            var p = new TPPLPartition();
+            var p = new TpplPartition();
             p.Triangulate_EC(polly, outlist);
 
             foreach (var tpplPoly in outlist)
             {
-                for (int i = 0; i < tpplPoly.Points.Count - 1; i++)
-                {
-                    var a = tpplPoly.Points[i];
-                    var b = tpplPoly.Points[i + 1];
+                var a = tpplPoly.Points[0];
+                var b = tpplPoly.Points[1];
+                var v = tpplPoly.Points[2];
 
-                    DrawLine((int) a.X, (int) a.Y, (int) b.X, (int) b.Y, c);
-                }
+                FillTriangle(0, 0, new Point((int)a.X, (int)a.Y), new Point((int)b.X, (int)b.Y), new Point((int)v.X, (int)v.Y), c);
+            }
+        }
+
+        public void FillPolygon(Point[] points, Color c)
+        {
+            var polly = new TpplPoly(points.Length + 1);
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                polly[i].X = points[i].X;
+                polly[i].Y = points[i].Y;
+            }
+
+            polly[polly.Count - 1].X = points[0].X;
+            polly[polly.Count - 1].Y = points[0].Y;
+
+            var outlist = new List<TpplPoly>();
+
+            var p = new TpplPartition();
+            p.Triangulate_EC(polly, outlist);
+
+            foreach (var tpplPoly in outlist)
+            {
+                    var a = tpplPoly.Points[0];
+                    var b = tpplPoly.Points[1];
+                    var v = tpplPoly.Points[2];
+
+                    FillTriangle(0,0, new Point((int)a.X, (int)a.Y), new Point((int)b.X, (int)b.Y), new Point((int)v.X, (int)v.Y), c);
             }
         }
 
@@ -290,17 +483,21 @@ namespace CosmosGL.System.Graphics
 
         public void ResetClip()
         {
-            /* TODO */
+            ClipingFlag = false;
         }
 
-        public void ExcludeClip()
+        public void ExcludeClip(int x, int y, int w, int h)
         {
-            /* TODO */
+            ClipingFlag = true;
+            ClipingIsInclude = false;
+            ClipRectangle = new Rectangle(x, y, w, h);
         }
 
-        public void SetClip()
+        public void IncludeClip(int x, int y, int w, int h)
         {
-            /* TODO */
+            ClipingFlag = true;
+            ClipingIsInclude = true;
+            ClipRectangle = new Rectangle(x, y, w, h);
         }
 
         #endregion

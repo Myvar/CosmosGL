@@ -100,11 +100,8 @@ C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\System.Xml.XPath.
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\CosmosGL.System.dll
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\CosmosGL.Hal.dll
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\Cosmos.Core.dll
-C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\Cosmos.Debug.Kernel.dll
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\CosmosGL.System.pdb
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\CosmosGL.Hal.pdb
-C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\Cosmos.Core.pdb
-C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\bin\Debug\Cosmos.Debug.Kernel.pdb
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\obj\Debug\WinDebugFrm.csprojResolveAssemblyReference.cache
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\obj\Debug\WinDebugFrm.exe.config
 C:\Users\Emile\Documents\GitHub\CosmosGL\WinDebugFrm\obj\Debug\WinDebugFrm.Form1.resources

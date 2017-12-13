@@ -4,20 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CosmosGL.System.Fonts;
-using CosmosGL.System.TrueType;
+using CosmosGL.System.Graphics;
+using Point = CosmosGL.System.Graphics.Point;
 
 namespace WinDebugFrm
 {
     public partial class Form1 : Form
     {
-        private TrueTypeFont font = new TrueTypeFont(Cairo.CairoRegular_ttf);
-
         public Form1()
         {
             InitializeComponent();
@@ -25,8 +22,65 @@ namespace WinDebugFrm
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-          
+            var canvas = new FormCanvas(Width, Height);
 
+            var g = new Graphics(canvas);
+            g.Clear(Colors.DarkCyan);
+
+            //test code
+
+            //FontTest(g);
+
+
+            //g.IncludeClip(50, 50, 100, 100);
+
+            g.FillRectangle(10, 20, 50, 50, Colors.Green);
+
+            g.DrawLine(20, 30, 70, 60, Colors.Blue);
+            g.DrawEllipse(40, 40, 20, 40, Colors.DarkKhaki);
+            g.DrawRectangle(10, 10, 100, 100, Colors.BlanchedAlmond);
+
+            g.FillEllipse(100, 100, 20, 40, Colors.DarkSeaGreen);
+
+            g.DrawPath(new Point[]
+            {
+                new Point(200, 220),
+                new Point(250, 210),
+                new Point(300, 260),
+            }, Colors.Aqua);
+
+
+            g.FillPolygon(new Point[]
+            {
+                new Point(300, 300),
+                new Point(350, 300),
+                new Point(350, 350),
+            }, Colors.Beige);
+
+
+            g.DrawPolygon(new Point[]
+            {
+                new Point(300, 300),
+                new Point(350, 300),
+                new Point(350, 350),
+            }, Colors.Red);
+
+            g.FillPolygon(new Point[]
+            {
+                new Point(400, 300),
+                new Point(450, 300),
+                new Point(450, 450),
+                new Point(500, 450),
+            }, Colors.Beige);
+
+            g.FillRectangle(25, 35, 100, 100, new Color(Colors.Red, 128));
+            g.Clear(Colors.DarkCyan);
+
+            FontTest.Draw(g);
+
+
+            e.Graphics.Clear(System.Drawing.Color.White);
+            e.Graphics.DrawImageUnscaled(canvas.Bitmap, 0, 0);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -36,17 +90,6 @@ namespace WinDebugFrm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var g = this.CreateGraphics();
-            font.DrawLineAction = (x, y, x1, y1, color) => g.DrawLine(new Pen(Color.Black, 5), x, y, x1, y1);
-            g.Clear(Color.White);
-
-           
-            float scale = 0.50f;
-
-            font.DrawGlyph(null, 37, scale, scale, 50, 50);
-
-          
-            g.Flush();
         }
     }
 }

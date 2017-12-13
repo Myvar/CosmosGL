@@ -30,26 +30,26 @@ using tppl_float = System.Single;
 
 namespace PolyPartition
 {
-    public sealed class TPPLPoint : ICloneable
+    public sealed class TpplPoint : ICloneable
     {
-        public TPPLPoint(tppl_float x, tppl_float y, int id)
+        public TpplPoint(tppl_float x, tppl_float y, int id)
         {
             X = x; Y = y;
         }
 
-        public TPPLPoint(tppl_float x, tppl_float y)
+        public TpplPoint(tppl_float x, tppl_float y)
             : this(x, y, 0)
         {
         }
 
-        public TPPLPoint(TPPLPoint src)
+        public TpplPoint(TpplPoint src)
         {
             X = src.X;
             Y = src.Y;
             Id = src.Id;
         }
 
-        public TPPLPoint()
+        public TpplPoint()
             : this(0.0f, 0.0f, 0)
         {
         }
@@ -72,59 +72,59 @@ namespace PolyPartition
             set;
         }
 
-        public static TPPLPoint operator + (TPPLPoint lhs, TPPLPoint rhs)
+        public static TpplPoint operator + (TpplPoint lhs, TpplPoint rhs)
         {
-            return new TPPLPoint(lhs.X + rhs.X, lhs.Y + rhs.Y);
+            return new TpplPoint(lhs.X + rhs.X, lhs.Y + rhs.Y);
         }
 
-        public static TPPLPoint operator + (TPPLPoint lhs, tppl_float rhs)
+        public static TpplPoint operator + (TpplPoint lhs, tppl_float rhs)
         {
-            return new TPPLPoint(lhs.X + rhs, lhs.Y + rhs);
+            return new TpplPoint(lhs.X + rhs, lhs.Y + rhs);
         }
 
-        public static TPPLPoint operator - (TPPLPoint lhs, TPPLPoint rhs)
+        public static TpplPoint operator - (TpplPoint lhs, TpplPoint rhs)
         {
-            return new TPPLPoint(lhs.X - rhs.X, lhs.Y - rhs.Y);
+            return new TpplPoint(lhs.X - rhs.X, lhs.Y - rhs.Y);
         }
 
-        public static TPPLPoint operator - (TPPLPoint lhs, tppl_float rhs)
+        public static TpplPoint operator - (TpplPoint lhs, tppl_float rhs)
         {
-            return new TPPLPoint(lhs.X - rhs, lhs.Y - rhs);
+            return new TpplPoint(lhs.X - rhs, lhs.Y - rhs);
         }
 
-        public static TPPLPoint operator * (TPPLPoint lhs, TPPLPoint rhs)
+        public static TpplPoint operator * (TpplPoint lhs, TpplPoint rhs)
         {
-            return new TPPLPoint(lhs.X * rhs.X, lhs.Y * rhs.Y);
+            return new TpplPoint(lhs.X * rhs.X, lhs.Y * rhs.Y);
         }
 
-        public static TPPLPoint operator * (TPPLPoint lhs, tppl_float rhs)
+        public static TpplPoint operator * (TpplPoint lhs, tppl_float rhs)
         {
-            return new TPPLPoint(lhs.X * rhs, lhs.Y * rhs);
+            return new TpplPoint(lhs.X * rhs, lhs.Y * rhs);
         }
 
-        public static TPPLPoint operator / (TPPLPoint lhs, TPPLPoint rhs)
+        public static TpplPoint operator / (TpplPoint lhs, TpplPoint rhs)
         {
-            return new TPPLPoint(lhs.X / rhs.X, lhs.Y / rhs.Y);
+            return new TpplPoint(lhs.X / rhs.X, lhs.Y / rhs.Y);
         }
 
-        public static TPPLPoint operator / (TPPLPoint lhs, tppl_float rhs)
+        public static TpplPoint operator / (TpplPoint lhs, tppl_float rhs)
         {
-            return new TPPLPoint(lhs.X / rhs, lhs.Y / rhs);
+            return new TpplPoint(lhs.X / rhs, lhs.Y / rhs);
         }
 
-        public static bool operator == (TPPLPoint lhs, TPPLPoint rhs)
+        public static bool operator == (TpplPoint lhs, TpplPoint rhs)
         {
             return (lhs.X == rhs.X) && (lhs.Y == rhs.Y);
         }
 
-        public static bool operator != (TPPLPoint lhs, TPPLPoint rhs)
+        public static bool operator != (TpplPoint lhs, TpplPoint rhs)
         {
             return !(lhs == rhs);
         }
 
         public object Clone()
         {
-            return new TPPLPoint(X, Y, Id);
+            return new TpplPoint(X, Y, Id);
         }
 
         public override string ToString()

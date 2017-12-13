@@ -46,7 +46,7 @@ namespace CosmosGL.System.TrueType
         public short XMax { get; set; }
         public short YMax { get; set; }
         public ushort MacStyle { get; set; }
-        public ushort LowestRecPPEM { get; set; }
+        public ushort LowestRecPpem { get; set; }
         public short FontDirectionHint { get; set; }
         public short IndexToLocFormat { get; set; }
         public short GlyphDataFormat { get; set; }
@@ -109,7 +109,7 @@ namespace CosmosGL.System.TrueType
             XMax = _file.GetFword();
             YMax = _file.GetFword();
             MacStyle = _file.GetUint16();
-            LowestRecPPEM = _file.GetUint16();
+            LowestRecPpem = _file.GetUint16();
             FontDirectionHint = _file.GetInt16();
             IndexToLocFormat = _file.GetInt16();
             GlyphDataFormat = _file.GetInt16();
@@ -162,22 +162,22 @@ namespace CosmosGL.System.TrueType
         public Glyph ReadGlyph(int index)
         {
             var offset = GetGlyphOffset(index);
-            var _file = this._file;
+            var file = this._file;
 
             if (offset >= GetTable("glyf").Offset + GetTable("glyf").Length)
             {
                 return null;
             }
 
-            _file.Seek(offset);
+            file.Seek(offset);
 
             var glyph = new Glyph()
             {
-                NumberOfContours = _file.GetInt16(),
-                XMin = _file.GetFword(),
-                YMin = _file.GetFword(),
-                XMax = _file.GetFword(),
-                YMax = _file.GetFword()
+                NumberOfContours = file.GetInt16(),
+                XMin = file.GetFword(),
+                YMin = file.GetFword(),
+                XMax = file.GetFword(),
+                YMax = file.GetFword()
             };
 
 
@@ -193,7 +193,7 @@ namespace CosmosGL.System.TrueType
             return glyph;
         }
 
-        public void ReadCoordString(int numPoints, byte[] flags, List<Point> Points, string name, int byteFlag,
+        public void ReadCoordString(int numPoints, byte[] flags, List<Point> points, string name, int byteFlag,
             int deltaFlag, int min, int max)
         {
             var value = 0;
@@ -220,7 +220,7 @@ namespace CosmosGL.System.TrueType
                 {
                     // value is unchanged.
                 }
-                Points[i][name] = value;
+                points[i][name] = value;
             }
         }
 
@@ -240,12 +240,12 @@ namespace CosmosGL.System.TrueType
 
         public void ReadSimpleGlyph(ref Glyph glyph)
         {
-            var ON_CURVE = 1;
-            var X_IS_BYTE = 2;
-            var Y_IS_BYTE = 4;
-            var REPEAT = 8;
-            var X_DELTA = 16;
-            var Y_DELTA = 32;
+            var onCurve = 1;
+            var xIsByte = 2;
+            var yIsByte = 4;
+            var repeat = 8;
+            var xDelta = 16;
+            var yDelta = 32;
 
             glyph.Type = "simple";
             glyph.ContourEnds = new List<ushort>();
@@ -272,45 +272,45 @@ namespace CosmosGL.System.TrueType
             {
                 var flag = _file.GetUint8();
                 flags.Add(flag);
-                var point = new Point((flag & ON_CURVE) > 0);
+                var point = new Point((flag & onCurve) > 0);
                 glyph.Points.Add(point);
 
-                if ((flag & REPEAT) != 0)
+                if ((flag & repeat) != 0)
                 {
                     var repeatCount = _file.GetUint8();
                     i += repeatCount;
                     while (repeatCount-- != 0)
                     {
                         flags.Add(flag);
-                        var pointa = new Point((flag & ON_CURVE) > 0);
+                        var pointa = new Point((flag & onCurve) > 0);
                         glyph.Points.Add(pointa);
                     }
                 }
             }
 
-            ReadCoordString(numPoints, flags.ToArray(), glyph.Points, "x", X_IS_BYTE, X_DELTA, glyph.XMin, glyph.XMax);
-            ReadCoordString(numPoints, flags.ToArray(), glyph.Points, "y", Y_IS_BYTE, Y_DELTA, glyph.YMin, glyph.YMax);
+            ReadCoordString(numPoints, flags.ToArray(), glyph.Points, "x", xIsByte, xDelta, glyph.XMin, glyph.XMax);
+            ReadCoordString(numPoints, flags.ToArray(), glyph.Points, "y", yIsByte, yDelta, glyph.YMin, glyph.YMax);
         }
 
         public void ReadCompoundGlyph(ref Glyph glyph)
         {
-            var ARG_1_AND_2_ARE_WORDS = 1;
-            var ARGS_ARE_XY_VALUES = 2;
-            var ROUND_XY_TO_GRID = 4;
-            var WE_HAVE_A_SCALE = 8;
+            var arg1And2AreWords = 1;
+            var argsAreXyValues = 2;
+            var roundXyToGrid = 4;
+            var weHaveAScale = 8;
             // RESERVED              = 16
-            var MORE_COMPONENTS = 32;
-            var WE_HAVE_AN_X_AND_Y_SCALE = 64;
-            var WE_HAVE_A_TWO_BY_TWO = 128;
-            var WE_HAVE_INSTRUCTIONS = 256;
-            var USE_MY_METRICS = 512;
-            var OVERLAP_COMPONENT = 1024;
+            var moreComponents = 32;
+            var weHaveAnXAndYScale = 64;
+            var weHaveATwoByTwo = 128;
+            var weHaveInstructions = 256;
+            var useMyMetrics = 512;
+            var overlapComponent = 1024;
 
             glyph.Type = "compound";
             glyph.Components = new List<Component>();
 
-            var flags = MORE_COMPONENTS;
-            while ((flags & MORE_COMPONENTS) != 0)
+            var flags = moreComponents;
+            while ((flags & moreComponents) != 0)
             {
                 short arg1, arg2;
 
@@ -329,7 +329,7 @@ namespace CosmosGL.System.TrueType
                     }
                 };
 
-                if ((flags & ARG_1_AND_2_ARE_WORDS) != 0)
+                if ((flags & arg1And2AreWords) != 0)
                 {
                     arg1 = _file.GetInt16();
                     arg2 = _file.GetInt16();
@@ -340,7 +340,7 @@ namespace CosmosGL.System.TrueType
                     arg2 = _file.GetUint8();
                 }
 
-                if ((flags & ARGS_ARE_XY_VALUES) != 0)
+                if ((flags & argsAreXyValues) != 0)
                 {
                     component.Matrix.E = arg1;
                     component.Matrix.F = arg2;
@@ -351,17 +351,17 @@ namespace CosmosGL.System.TrueType
                     component.SrcPointIndex = arg2;
                 }
 
-                if ((flags & WE_HAVE_A_SCALE) != 0)
+                if ((flags & weHaveAScale) != 0)
                 {
                     component.Matrix.A = _file.Get2Dot14();
                     component.Matrix.D = component.Matrix.A;
                 }
-                else if ((flags & WE_HAVE_AN_X_AND_Y_SCALE) != 0)
+                else if ((flags & weHaveAnXAndYScale) != 0)
                 {
                     component.Matrix.A = _file.Get2Dot14();
                     component.Matrix.D = _file.Get2Dot14();
                 }
-                else if ((flags & WE_HAVE_A_TWO_BY_TWO) != 0)
+                else if ((flags & weHaveATwoByTwo) != 0)
                 {
                     component.Matrix.A = _file.Get2Dot14();
                     component.Matrix.B = _file.Get2Dot14();
@@ -372,7 +372,7 @@ namespace CosmosGL.System.TrueType
                 glyph.Components.Add(component);
             }
 
-            if ((flags & WE_HAVE_INSTRUCTIONS) != 0)
+            if ((flags & weHaveInstructions) != 0)
             {
                 _file.Seek(_file.GetUint16() + _file.Tell());
             }
@@ -382,7 +382,7 @@ namespace CosmosGL.System.TrueType
         public bool DrawGlyph(Graphics.Graphics gr, int index, float scalex, float scaley, int translatex, int translatey)
         {
 
-          
+
 
             var glyph = ReadGlyph(index);
 
@@ -399,43 +399,43 @@ namespace CosmosGL.System.TrueType
 
             bool flag = false;
 
-            for (var i = 0; i < glyph.Points.Count - 1; i++)
+            var path = new List<CosmosGL.System.Graphics.Point>();
+
+            for (var i = 0; i < glyph.Points.Count; i++)
             {
                 if (i == glyph.ContourEnds[c])
                 {
                     c += 1;
                     i++;
-                    flag = false;
+
+                    if (c > 1)
+                    {
+                        //path.Reverse();
+                    }
+                    gr.FillPath(path.ToArray(), Colors.Black);
+                    
+
+                    path.Clear();
                 }
+
+
                 else
                 {
 
                     var glyphPointA = glyph.Points[i];
-                    var glyphPointB = glyph.Points[i + 1];
 
-                    if (!false)
-                    {
-                        firstx = glyphPointA["x"];
-                        firsty = glyphPointA["y"];
-                        flag = true;
-                    }
-                
 
-                    var x1 = scalex * (glyphPointA["x"] + translatex);
-                    var y1 = scaley * (glyphPointA["y"] + translatey);
 
-                    var x2 = scalex * (glyphPointB["x"] + translatex);
-                    var y2 = scaley * (glyphPointB["y"] + translatey);
+                    var x1 = (scalex * glyphPointA["x"]) + translatex;
+                    var y1 = (scaley * glyphPointA["y"]) + translatey;
 
-                    Console.WriteLine(
-                        $"(scalex: {scalex}, trasx: {translatex}) x1: {x1}, y1: {y1} | x2: {x2}, y2: {y2}");
 
-                    gr.DrawLine((int) x1, (int) y1, (int) x2, (int) y2, Colors.Black);
-
+                    path.Add(new Graphics.Point((int) x1, (int) y1));
                 }
 
 
             }
+           if(path.Count > 0) gr.FillPolygon(path.ToArray(), Colors.Black);
 
 
             /* 

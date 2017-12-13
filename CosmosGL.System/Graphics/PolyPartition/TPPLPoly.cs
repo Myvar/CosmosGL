@@ -33,14 +33,14 @@ using tppl_float = System.Single;
 namespace PolyPartition
 {
 
-    public enum TPPLOrder : int
+    public enum TpplOrder : int
     {
         Unknown = 0,
-        CW = -1,
-        CCW = 1
+        Cw = -1,
+        Ccw = 1
     }
 
-    public enum TPPLVertexType : int
+    public enum TpplVertexType : int
     {
         Regular = 0,
         Start,
@@ -49,21 +49,21 @@ namespace PolyPartition
         Merge
     }
 
-    public sealed class TPPLPoly
+    public sealed class TpplPoly
     {
-        public TPPLPoly(int numPoints)
+        public TpplPoly(int numPoints)
         {
             Clear();
 
-            Points = new List<TPPLPoint>(numPoints);
+            Points = new List<TpplPoint>();
 
             for (int i = 0; i < numPoints; i++)
             {
-                Points[i] = new TPPLPoint();
+                Points.Add(new TpplPoint());
             }
         }
 
-        public TPPLPoly(TPPLPoly src)
+        public TpplPoly(TpplPoly src)
         {
             Clear();
 
@@ -71,27 +71,27 @@ namespace PolyPartition
 
             if (src.Points != null)
             {
-                Points = new List<TPPLPoint>(src.Points.Count);
+                Points = new List<TpplPoint>(src.Points.Count);
 
                 for (int i = 0; i < Points.Count; i++)
                 {
-                    Points[i] = new TPPLPoint(src.Points[i]);
+                    Points[i] = new TpplPoint(src.Points[i]);
                 }
             }
         }
 
-        public TPPLPoly(TPPLPoint a, TPPLPoint b, TPPLPoint c)
+        public TpplPoly(TpplPoint a, TpplPoint b, TpplPoint c)
         {
             Triangle(a, b, c);
         }
 
-        public TPPLPoly()
+        public TpplPoly()
         {
             Clear();
-            Points = new List<TPPLPoint>();
+            Points = new List<TpplPoint>();
         }
 
-        public List<TPPLPoint> Points
+        public List<TpplPoint> Points
         {
             get;
             set;
@@ -111,7 +111,7 @@ namespace PolyPartition
             }
         }
 
-        public TPPLPoint this[int i]
+        public TpplPoint this[int i]
         {
             get
             {
@@ -123,7 +123,7 @@ namespace PolyPartition
             }
         }
 
-        public TPPLOrder Orientation
+        public TpplOrder Orientation
         {
             get
             {
@@ -141,15 +141,15 @@ namespace PolyPartition
             Hole = false;
         }
 
-        public void Triangle(TPPLPoint a, TPPLPoint b, TPPLPoint c)
+        public void Triangle(TpplPoint a, TpplPoint b, TpplPoint c)
         {
             Clear();
-            Points = new List<TPPLPoint>(3) { a, b, c };
+            Points = new List<TpplPoint>(3) { a, b, c };
         }
 
-        public TPPLOrder GetOrientation()
+        public TpplOrder GetOrientation()
         {
-            TPPLOrder ret = TPPLOrder.Unknown;
+            TpplOrder ret = TpplOrder.Unknown;
 
             if (Points != null)
             {
@@ -167,18 +167,18 @@ namespace PolyPartition
 
                 if (area > 0)
                 {
-                    return TPPLOrder.CCW;
+                    return TpplOrder.Ccw;
                 }
                 else if (area < 0)
                 {
-                    return TPPLOrder.CW;
+                    return TpplOrder.Cw;
                 }
             }
 
             return ret;
         }
 
-        public void SetOrientation(TPPLOrder orientation)
+        public void SetOrientation(TpplOrder orientation)
         {
             if (GetOrientation() != orientation)
             {
@@ -202,7 +202,7 @@ namespace PolyPartition
             {
                 bool f = true;
 
-                foreach (TPPLPoint p in Points)
+                foreach (TpplPoint p in Points)
                 {
                     if (!f)
                     {

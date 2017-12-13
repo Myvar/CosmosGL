@@ -8,10 +8,10 @@ namespace CosmosGL.System.Drivers
 {
     public unsafe class Memmory
     {
-        [PlugMethod(Assembler = typeof(asmCopyBytes))]
-        public static void memcpy(byte* dst, byte* src, int len) { }
+        [PlugMethod(Assembler = typeof(AsmCopyBytes))]
+        public static void Memcpy(byte* dst, byte* src, int len) { }
 
-        public class asmCopyBytes : AssemblerMethod
+        public class AsmCopyBytes : AssemblerMethod
         {
             public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
             {
@@ -23,10 +23,10 @@ namespace CosmosGL.System.Drivers
             }
         }
 
-        [PlugMethod(Assembler = typeof(asmCopyUint))]
-        public static void memcpy(uint* dst, uint* src, int len) { }
+        [PlugMethod(Assembler = typeof(AsmCopyUint))]
+        public static void Memcpy(uint* dst, uint* src, int len) { }
 
-        public class asmCopyUint : AssemblerMethod
+        public class AsmCopyUint : AssemblerMethod
         {
             public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
             {
@@ -38,10 +38,10 @@ namespace CosmosGL.System.Drivers
             }
         }
 
-        [PlugMethod(Assembler = typeof(asmSetByte))]
-        public static void memset(byte* dst, byte value, uint len) { }
+        [PlugMethod(Assembler = typeof(AsmSetByte))]
+        public static void Memset(byte* dst, byte value, uint len) { }
 
-        public class asmSetByte : AssemblerMethod
+        public class AsmSetByte : AssemblerMethod
         {
             public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
             {
@@ -53,10 +53,10 @@ namespace CosmosGL.System.Drivers
             }
         }
 
-        [PlugMethod(Assembler = typeof(asmSetUint))]
-        public static void memset(uint* dst, uint value, uint len) { }
+        [PlugMethod(Assembler = typeof(AsmSetUint))]
+        public static void Memset(uint* dst, uint value, uint len) { }
 
-        public class asmSetUint : AssemblerMethod
+        public class AsmSetUint : AssemblerMethod
         {
             public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
             {

@@ -3,7 +3,7 @@ using CosmosGL.System.Drivers;
 
 namespace CosmosGL.System.Graphics
 {
-    public unsafe class Canvas
+    public unsafe class Canvas : ICanvas
     {
         public int Width { get; set; }
         public int Height { get; set; }
@@ -35,12 +35,12 @@ namespace CosmosGL.System.Graphics
 
         public void WriteToScreen()
         {
-            Memmory.memcpy((uint*) 0xE0000000, _buffer, Width * Height);
+            Memmory.Memcpy((uint*) 0xE0000000, _buffer, Width * Height);
         }
 
         public void Clear(uint c)
         {
-            Memmory.memset(_buffer, c, (uint)(Width * Height));
+            Memmory.Memset(_buffer, c, (uint)(Width * Height));
         }
     }
 }

@@ -11,17 +11,17 @@ namespace TestKernel
 {
     public class Kernel : Sys.Kernel
     {
-        public VBEScreen Screen = new VBEScreen();
+        public VbeScreen Screen = new VbeScreen();
         public Canvas Canvas = new Canvas(800, 600);
 
         protected override void BeforeRun()
         {
             Console.Clear();
-            Screen.SetMode(VBEScreen.ScreenSize.Size800x600, VBEScreen.Bpp.Bpp32);
+            Screen.SetMode(VbeScreen.ScreenSize.Size800X600, VbeScreen.Bpp.Bpp32);
             Screen.Clear(Colors.Blue);
 
 
-            deltaT = RTC.Second;
+            _deltaT = RTC.Second;
 
             var g = new Graphics(Canvas);
             g.Clear(Colors.White);
@@ -57,27 +57,30 @@ namespace TestKernel
 //            }
 //        }
 
-        int Frames = 0;
-        int FPS = 0;
-        int deltaT = 0;
+        int _frames = 0;
+        int _fps = 0;
+        int _deltaT = 0;
 
         protected override void Run()
         {
-            if (deltaT != RTC.Second)
+            if (_deltaT != RTC.Second)
             {
-                FPS = Frames;
-                Frames = 0;
-                deltaT = RTC.Second;
+                _fps = _frames;
+                _frames = 0;
+                _deltaT = RTC.Second;
             }
 
-            Frames++;
+            _frames++;
 
             var g = new Graphics(Canvas);
-            g.Clear(Colors.DarkCyan);
+            g.Clear(Colors.Red);
 
             //test code
 
             //FontTest(g);
+
+
+            //g.IncludeClip(50, 50, 100, 100);
 
             g.FillRectangle(10, 20, 50, 50, Colors.Green);
 
@@ -89,11 +92,10 @@ namespace TestKernel
 
             g.DrawPath(new Point[]
             {
-                new Point(200,220), 
-                new Point(250,210), 
-                new Point(300,260), 
+                new Point(200, 220),
+                new Point(250, 210),
+                new Point(300, 260),
             }, Colors.Aqua);
-
 
 
             /*   g.FillPolygon(new Point[]
@@ -104,13 +106,13 @@ namespace TestKernel
              }, Colors.Beige);
              */
             g.DrawPolygon(new Point[]
-             {
-                 new Point(300,300),
-                 new Point(350,300),
-                 new Point(350,350),
-             }, Colors.Red);
+            {
+                new Point(300, 300),
+                new Point(350, 300),
+                new Point(350, 350),
+            }, Colors.Red);
 
-            g.FillRectangle(25, 35, 100, 100, new Color(Colors.Red, 128));
+            //g.FillRectangle(25, 35, 100, 100, new Color(Colors.Red, 128));
 
             Canvas.WriteToScreen();
         }

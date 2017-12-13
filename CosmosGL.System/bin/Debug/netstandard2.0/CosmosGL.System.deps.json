@@ -10,7 +10,10 @@
       "CosmosGL.System/1.0.0": {
         "dependencies": {
           "CosmosGL.Hal": "1.0.0",
-          "NETStandard.Library": "2.0.0"
+          "NETStandard.Library": "2.0.0",
+          "Cosmos.Core": "1.0.0.0",
+          "Cosmos.IL2CPU.API": "1.0.0.0",
+          "XSharp.Assembler": "1.0.0.0"
         },
         "runtime": {
           "CosmosGL.System.dll": {}
@@ -25,6 +28,21 @@
       "CosmosGL.Hal/1.0.0": {
         "runtime": {
           "CosmosGL.Hal.dll": {}
+        }
+      },
+      "Cosmos.Core/1.0.0.0": {
+        "runtime": {
+          "Cosmos.Core.dll": {}
+        }
+      },
+      "Cosmos.IL2CPU.API/1.0.0.0": {
+        "runtime": {
+          "Cosmos.IL2CPU.API.dll": {}
+        }
+      },
+      "XSharp.Assembler/1.0.0.0": {
+        "runtime": {
+          "XSharp.Assembler.dll": {}
         }
       }
     }
@@ -51,6 +69,21 @@
     },
     "CosmosGL.Hal/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cosmos.Core/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cosmos.IL2CPU.API/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "XSharp.Assembler/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace CosmosGL.Hal
 {
-    public class VBEDriver
+    public class VbeDriver
     {
        
-        public Cosmos.Core.IOGroup.VBE IO = Cosmos.Core.Global.BaseIOGroups.VBE;
+        public Cosmos.Core.IOGroup.VBE Io = Cosmos.Core.Global.BaseIOGroups.VBE;
 
         private void vbe_write(ushort index, ushort value)
         {
-            IO.VbeIndex.Word =  index;
-            IO.VbeData.Word = value;
+            Io.VbeIndex.Word =  index;
+            Io.VbeData.Word = value;
         }
 
         
@@ -42,18 +42,18 @@ namespace CosmosGL.Hal
         {
             for (uint i = 0; i < value.Length; i++)
             {
-                IO.LinearFrameBuffer[i] = value[i];
+                Io.LinearFrameBuffer[i] = value[i];
             }
         }
 
         public void set_vram(uint index, byte value)
         {
-            IO.LinearFrameBuffer[index] = value;
+            Io.LinearFrameBuffer[index] = value;
         }
 
         public byte get_vram(uint index)
         {
-            return (byte)IO.LinearFrameBuffer[index];
+            return (byte)Io.LinearFrameBuffer[index];
         }
 
     }

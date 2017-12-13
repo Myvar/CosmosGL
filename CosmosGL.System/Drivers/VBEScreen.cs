@@ -11,12 +11,12 @@ using XSharp.Assembler;
 
 namespace CosmosGL.System
 {
-    public unsafe class VBEScreen
+    public unsafe class VbeScreen
     {
         /// <summary>
         /// Driver for Setting vbe modes and ploting/getting pixels
         /// </summary>
-        private VBEDriver _vbe = new VBEDriver();
+        private VbeDriver _vbe = new VbeDriver();
 
         /// <summary>
         /// The current Width of the screen in pixels
@@ -38,12 +38,12 @@ namespace CosmosGL.System
         /// </summary>
         public enum ScreenSize
         {
-            Size320x200,
-            Size640x400,
-            Size640x480,
-            Size800x600,
-            Size1024x768,
-            Size1280x1024
+            Size320X200,
+            Size640X400,
+            Size640X480,
+            Size800X600,
+            Size1024X768,
+            Size1280X1024
 
         }
         /// <summary>
@@ -67,27 +67,27 @@ namespace CosmosGL.System
             //Get screen size
             switch (aSize)
             {
-                case ScreenSize.Size320x200:
+                case ScreenSize.Size320X200:
                     ScreenWidth = 320;
                     ScreenHeight = 200;
                     break;
-                case ScreenSize.Size640x400:
+                case ScreenSize.Size640X400:
                     ScreenWidth = 640;
                     ScreenHeight = 400;
                     break;
-                case ScreenSize.Size640x480:
+                case ScreenSize.Size640X480:
                     ScreenWidth = 640;
                     ScreenHeight = 480;
                     break;
-                case ScreenSize.Size800x600:
+                case ScreenSize.Size800X600:
                     ScreenWidth = 800;
                     ScreenHeight = 600;
                     break;
-                case ScreenSize.Size1024x768:
+                case ScreenSize.Size1024X768:
                     ScreenWidth = 1024;
                     ScreenHeight = 768;
                     break;
-                case ScreenSize.Size1280x1024:
+                case ScreenSize.Size1280X1024:
                     ScreenWidth = 1280;
                     ScreenHeight = 1024;
                     break;
@@ -116,7 +116,7 @@ namespace CosmosGL.System
 
         #region Drawing
         //used to convert from rgb to hex color
-        private uint GetIntFromRBG(byte red, byte green, byte blue)
+        private uint GetIntFromRbg(byte red, byte green, byte blue)
         {
             uint x;
             x = (blue);
@@ -142,7 +142,7 @@ namespace CosmosGL.System
         public void Clear(uint color)
         {
             Color c = new Color((int)color);
-           Memmory.memset((uint*) 0xE0000000, (uint)color, (uint)(ScreenWidth * ScreenHeight));
+           Memmory.Memset((uint*) 0xE0000000, (uint)color, (uint)(ScreenWidth * ScreenHeight));
         }
         /// <summary>
         /// Clear the screen with a given color
@@ -152,12 +152,12 @@ namespace CosmosGL.System
         /// <param name="blue">Blue value max is 255</param>
         public void Clear(byte red, byte green, byte blue)
         {
-            Clear(GetIntFromRBG(red, green, blue));
+            Clear(GetIntFromRbg(red, green, blue));
         }
 
-        public void SetBuffer(byte[] Buffer)
+        public void SetBuffer(byte[] buffer)
         {
-            _vbe.set_vram(Buffer);
+            _vbe.set_vram(buffer);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace CosmosGL.System
         /// <param name="blue">Blue value max is 255</param>
         public void SetPixel(uint x, uint y, byte red, byte green, byte blue)
         {
-            SetPixel(x, y, GetIntFromRBG(red, green, blue));
+            SetPixel(x, y, GetIntFromRbg(red, green, blue));
         }
         #endregion
 
@@ -199,7 +199,7 @@ namespace CosmosGL.System
         public uint GetPixel(uint x, uint y)
         {
             uint where = x * ((uint)ScreenBpp / 8) + y * (uint)(ScreenWidth * ((uint)ScreenBpp / 8));
-            return GetIntFromRBG(_vbe.get_vram(where + 2), _vbe.get_vram(where + 1), _vbe.get_vram(where));
+            return GetIntFromRbg(_vbe.get_vram(where + 2), _vbe.get_vram(where + 1), _vbe.get_vram(where));
         }
         #endregion
 

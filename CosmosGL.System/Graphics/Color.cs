@@ -8,44 +8,44 @@
         public byte A { get; set; }
 
 
-        private byte _R;
+        private byte _r;
 
         public byte R
         {
-            get { return _R; }
+            get { return _r; }
             set
             {
-                _R = value;
-                _Hex = ((R << 16) | (G << 8) | B);
+                _r = value;
+                Hex = ((R << 16) | (G << 8) | B);
             }
         }
 
-        private byte _G;
+        private byte _g;
 
         public byte G
         {
-            get { return _G; }
+            get { return _g; }
             set
             {
-                _G = value;
-                _Hex = ((R << 16) | (G << 8) | B);
+                _g = value;
+                Hex = ((R << 16) | (G << 8) | B);
             }
         }
 
-        private byte _B;
+        private byte _b;
 
         public byte B
         {
-            get { return _B; }
+            get { return _b; }
             set
             {
-                _B = value;
-                _Hex = ((R << 16) | (G << 8) | B);
+                _b = value;
+                Hex = ((R << 16) | (G << 8) | B);
             }
         }
 
 
-        private int _Hex { get; set; }
+        private int Hex { get; set; }
 
         public Color(byte r, byte g, byte b)
         {
@@ -83,7 +83,7 @@
         {
         }
 
-        public int ToHex() => _Hex;
+        public int ToHex() => Hex;
 
         public static implicit operator int(Color c)
         {
