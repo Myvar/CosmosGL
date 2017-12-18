@@ -142,7 +142,7 @@ namespace CosmosGL.System
         public void Clear(uint color)
         {
             Color c = new Color((int)color);
-           Memmory.Memset((uint*) 0xE0000000, (uint)color, (uint)(ScreenWidth * ScreenHeight));
+           Memory.Memset((uint*) 0xE0000000, (uint)color, (uint)(ScreenWidth * ScreenHeight));
         }
         /// <summary>
         /// Clear the screen with a given color
