@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CosmosGL.System.Graphics;
+﻿using System.Collections.Generic;
 
 namespace CosmosGL.System.TrueType
 {
@@ -379,53 +376,57 @@ namespace CosmosGL.System.TrueType
         }
 
 
-        public bool DrawGlyph(Graphics.Graphics gr, int index, float scalex, float scaley, int translatex,
-            int translatey)
-        {
-            var glyph = ReadGlyph(index);
+        /*   public bool DrawGlyph(Graphics.Graphics gr, int index, float scalex, float scaley, int translatex,
+               int translatey)
+           {
+               var glyph = ReadGlyph(index);
 
-            if (glyph == null || glyph.Type != "simple")
-            {
-                return false;
-            }
-
-
-            var c = 0;
-            var last = 0;
-            
-
-            var path = new List<CosmosGL.System.Graphics.Point>();
-
-            for (var i = 0; i < glyph.Points.Count; i++)
-            {
-                var glyphPointA = glyph.Points[i];
+               if (glyph == null || glyph.Type != "simple")
+               {
+                   return false;
+               }
 
 
-                var x1 = (scalex * glyphPointA["x"]) + translatex;
-                var y1 = (scaley * glyphPointA["y"]) + translatey;
+               var c = 0;
+               var last = 0;
 
 
-                path.Add(new Graphics.Point((int) x1, (int) y1));
+               var path = new List<CosmosGL.System.Graphics.Point>();
 
-                if (i == glyph.ContourEnds[c])
-                {
-                    c += 1;
-                 
-                    gr.DrawPolygon(path.ToArray(), Colors.Black);
-                    path.Clear();
-
-                    //path.Add(path[last]);
+               for (var i = 0; i < glyph.Points.Count; i++)
+               {
+                   var glyphPointA = glyph.Points[i];
 
 
-                    // last = i;
-                }
-            }
-
-          
+                   var x1 = (scalex * glyphPointA["x"]) + translatex;
+                   var y1 = (scaley * glyphPointA["y"]) + translatey;
 
 
+                   path.Add(new Graphics.Point((int) x1, (int) y1));
 
-            return true;
-        }
+                   gr.FillRectangle((int)x1, (int)y1, 2, 2, Colors.Blue);
+                   gr.Flush();
+
+                   if (i == glyph.ContourEnds[c])
+                   {
+                       c += 1;
+
+                       gr.DrawPolygon(path.ToArray(), Colors.Black);
+
+                       path.Clear();
+
+                       //path.Add(path[last]);
+
+
+                       // last = i;
+                   }
+               }
+
+
+
+
+
+               return true;
+           } */
     }
 }

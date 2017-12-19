@@ -10,5 +10,6 @@
         void SetPixel(int x, int y, Color c);
         void SetPixel(int x, int y, uint c);
         void WriteToScreen();
+        void SetScanLine(int offset, int length, uint color);
     }
 }

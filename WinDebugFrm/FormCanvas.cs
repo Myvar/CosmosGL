@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WinDebugFrm
 {
-    public class FormCanvas : CosmosGL.System.Graphics.ICanvas
+    public unsafe class FormCanvas : CosmosGL.System.Graphics.ICanvas
     {
         public int Height { get; set; }
         public int Width { get; set; }
@@ -40,16 +43,46 @@ namespace WinDebugFrm
 
         public void SetPixel(int x, int y, CosmosGL.System.Graphics.Color c)
         {
-            Bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B));
+            if (x >= 0 && y >= 0)
+            {
+                Bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B));
+            }
         }
 
         public void SetPixel(int x, int y, uint c)
         {
-            SetPixel(x,y, new CosmosGL.System.Graphics.Color((int)c));
+            SetPixel(x, y, new CosmosGL.System.Graphics.Color((int) c));
         }
+
+        public BitmapData bmpData;
 
         public void WriteToScreen()
         {
+        }
+
+
+        public void Lock()
+        {
+            bmpData = Bitmap.LockBits(new Rectangle(0, 0, Bitmap.Width, Bitmap.Height), ImageLockMode.ReadWrite,
+                PixelFormat.Format32bppRgb);
+        }
+
+        public void UnLock()
+        {
+            Bitmap.UnlockBits(bmpData);
+        }
+
+        public void SetScanLine(int offset, int length, uint color)
+        {
+            if (offset >= 0)
+            {
+                var data = (uint*) bmpData.Scan0.ToPointer();
+
+                for (int i = offset; i < offset + length; i++)
+                {
+                    data[i] = color;
+                }
+            }
         }
     }
 }

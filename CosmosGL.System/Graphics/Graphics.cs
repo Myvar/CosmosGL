@@ -13,6 +13,9 @@ namespace CosmosGL.System.Graphics
         private bool ContainerFlag { get; set; }
         private bool ClipingFlag { get; set; }
         private bool ClipingIsInclude { get; set; }
+        private PointF Scale { get; set; } = new PointF(1, 1);
+        private Point Transform { get; set; } = new Point(0, 0);
+
         public int Height { get; set; }
         public int Width { get; set; }
 
@@ -40,6 +43,12 @@ namespace CosmosGL.System.Graphics
 
         private void SetPixel(int x, int y, Color c)
         {
+            x = (int) ((float) x * Scale.X);
+            y = (int) ((float) y * Scale.Y);
+
+            x += Transform.X;
+            y += Transform.Y;
+
             if (c.A != 255)
             {
                 //transparency needed
@@ -347,14 +356,16 @@ namespace CosmosGL.System.Graphics
 
             for (int j = yStart; j < yEnd; j++)
             {
-                
-                if (whichSide == 0)
+                if (j >= 0 && j < Height)
                 {
-                    scanBuffer[j].Min = (int) curX;
-                }
-                else
-                {
-                    scanBuffer[j].Max = (int) curX;
+                    if (whichSide == 0)
+                    {
+                        scanBuffer[j].Min = (int) curX;
+                    }
+                    else
+                    {
+                        scanBuffer[j].Max = (int) curX;
+                    }
                 }
 
                 curX += xStep;
@@ -364,6 +375,36 @@ namespace CosmosGL.System.Graphics
 
         public void FillTriangle(int x, int y, Point v0, Point v1, Point v2, Color c)
         {
+            /*  x = (int) ((float) x * Scale.X);
+              y = (int) ((float) y * Scale.Y);
+
+              x += Transform.X;
+              y += Transform.Y;
+              */
+            //
+            v0.X = (int) ((float) v0.X * Scale.X);
+              v0.Y = (int) ((float) v0.Y * Scale.Y);
+
+              v0.X += Transform.X;
+              v0.Y += Transform.Y;
+
+
+              //
+              v1.X = (int) ((float) v1.X * Scale.X);
+              v1.Y = (int) ((float) v1.Y * Scale.Y);
+
+              v1.X += Transform.X;
+              v1.Y += Transform.Y;
+
+
+              //
+              v2.X = (int) ((float) v2.X * Scale.X);
+              v2.Y = (int) ((float) v2.Y * Scale.Y);
+
+              v2.X += Transform.X;
+              v2.Y += Transform.Y;
+
+
             var scanBuffer = new List<MinMaxPair>();
 
             for (int i = 0; i < _canvas.Height; i++)
@@ -405,10 +446,12 @@ namespace CosmosGL.System.Graphics
             for (var j = 0; j < scanBuffer.Count; j++)
             {
                 var minMaxPair = scanBuffer[j];
-                for (int i = minMaxPair.Min; i < minMaxPair.Max; i++)
-                {
-                    SetPixel(x + i, y + j, c);
-                }
+                /* for (int i = minMaxPair.Min; i < minMaxPair.Max; i++)
+                 {
+                     SetPixel(x + i, y + j, c);
+                 }*/
+                _canvas.SetScanLine(((j + y) * _canvas.Width) + (minMaxPair.Min + x), minMaxPair.Max - minMaxPair.Min,
+                    (uint) c.ToHex());
             }
         }
 
@@ -434,7 +477,8 @@ namespace CosmosGL.System.Graphics
                 var b = tpplPoly.Points[1];
                 var v = tpplPoly.Points[2];
 
-                FillTriangle(0, 0, new Point((int)a.X, (int)a.Y), new Point((int)b.X, (int)b.Y), new Point((int)v.X, (int)v.Y), c);
+                FillTriangle(0, 0, new Point((int) a.X, (int) a.Y), new Point((int) b.X, (int) b.Y),
+                    new Point((int) v.X, (int) v.Y), c);
             }
         }
 
@@ -480,12 +524,19 @@ namespace CosmosGL.System.Graphics
 
         public void FillRectangle(int x, int y, int w, int h, Color c)
         {
-            for (int width = x; width < w; width++)
+            x = (int) ((float) x * Scale.X);
+            y = (int) ((float) y * Scale.Y);
+
+            x += Transform.X;
+            y += Transform.Y;
+
+            for (int height = y; height < h; height++)
             {
-                for (int height = y; height < h; height++)
-                {
-                    SetPixel(width, height, c);
-                }
+                _canvas.SetScanLine(x + (height * _canvas.Width), w, (uint) c.ToHex());
+                /*  for (int width = x; width < w; width++)
+                 {
+                          SetPixel(width, height, c);
+                 }*/
             }
         }
 
@@ -518,22 +569,18 @@ namespace CosmosGL.System.Graphics
 
         public void ResetTransform()
         {
-            /* TODO */
+            Transform = new Point(0, 0);
+            Scale = new PointF(1, 1);
         }
 
-        public void ScaleTransform()
+        public void ScaleTransform(float xSize, float ySize)
         {
-            /* TODO */
+            Scale = new PointF(xSize, ySize);
         }
 
-        public void TransformPoints()
+        public void TranslateTransform(int x, int y)
         {
-            /* TODO */
-        }
-
-        public void TranslateClip()
-        {
-            /* TODO */
+            Transform = new Point(x, y);
         }
 
         #endregion

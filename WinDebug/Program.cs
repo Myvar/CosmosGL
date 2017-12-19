@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using CosmosGL.System.Fonts;
-using CosmosGL.System.TrueType;
 
 namespace WinDebug
 {

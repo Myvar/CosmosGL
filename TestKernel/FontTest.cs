@@ -1,36 +1,24 @@
-﻿using CosmosGL.System.Fonts;
+﻿using CosmosGL.System;
+using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
-using CosmosGL.System.TrueType;
 
 namespace TestKernel
 {
     public static class FontTest
     {
-        public static void Draw(Graphics gr)
+        public static void Draw(ref Graphics gr)
         {
-            var font = new TrueTypeFont(Karla.KarlaRegularTtf);
+            var f = new CGLF(Karla.Karla_cglf);
 
-            float scale = 32f / font.UnitsPerEm;
+            var g = f.Glyphs[0];
+            
+            var scale = 22f / f.UnitsPerEm;
+            gr.TranslateTransform(10, 10 + (int)(((f.YMax - f.YMin) * scale)));
+            gr.ScaleTransform(scale, -scale);
 
-            var y = 5;
-            var x = 5;
-
-            int c = 0;
-
-            for (int i = 6; i < font.GlyphCount(); i++)
+            foreach (var gTriangle in g.Triangles)
             {
-                var g = font.ReadGlyph(i);
-
-                font.DrawGlyph(gr, i, scale, -scale, x,  (int) (y + ((font.YMax - font.YMin) * scale)) );
-                x += (int)(scale * g.XMax) + 5;
-                gr.Flush();
-                if (c > 30)
-                {
-                    y += (int)(scale * g.YMax) + 40;
-                    c = 0;
-                    x = 5;
-                }
-                c++;
+                gr.FillTriangle(0, 0, gTriangle.A, gTriangle.B, gTriangle.C, Colors.Black);
             }
         }
     }

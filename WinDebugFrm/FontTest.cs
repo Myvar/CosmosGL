@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CosmosGL.System;
 using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
-using CosmosGL.System.TrueType;
 
 namespace WinDebugFrm
 {
@@ -13,30 +15,47 @@ namespace WinDebugFrm
     {
         public static void Draw(Graphics gr)
         {
-            var font = new TrueTypeFont(Karla.KarlaRegularTtf);
+            var st = new Stopwatch();
+            st.Start();
 
-            float scale = 32f / font.UnitsPerEm;
+            var f = new CGLF(Karla.Karla_cglf);
 
-            var y = 5;
-            var x = 5;
+            st.Stop();
 
+            Debug.WriteLine(st.Elapsed.ToString());
+            st.Reset();
+
+            st.Start();
+            int x = 0;
+            int y = 0;
             int c = 0;
-
-            for (int i = 6; i < font.GlyphCount(); i++)
+            for (var index = 0; index <  1/*f.Glyphs.Count*/; index++)
             {
-                var g = font.ReadGlyph(i);
+                var g = f.Glyphs[index];
+                var scale = 22f / f.UnitsPerEm;
 
-                font.DrawGlyph(gr, i, scale, -scale, x,  (int) (y + ((font.YMax - font.YMin) * scale)) );
-                x += (int)(scale * g.XMax) + 5;
 
-                if (c > 30)
+                gr.TranslateTransform(x, y + (int) (((f.YMax - f.YMin) * scale)));
+                gr.ScaleTransform(scale, -scale);
+
+                x += 22;
+
+                if (c > 10)
                 {
-                    y += (int)(scale * g.YMax) + 40;
+                    y += 50;
+                    x = 0;
                     c = 0;
-                    x = 5;
                 }
-                c++;
+
+                foreach (var gTriangle in g.Triangles)
+                {
+                    gr.FillTriangle(0, 0, gTriangle.A, gTriangle.B, gTriangle.C, Colors.Black);
+                }
             }
+            st.Stop();
+
+            Debug.WriteLine(st.Elapsed.ToString());
+            st.Reset();
         }
     }
 }

@@ -38,6 +38,11 @@ namespace CosmosGL.System.Graphics
             Memmory.Memcpy((uint*) 0xE0000000, _buffer, Width * Height);
         }
 
+        public void SetScanLine(int offset, int length, uint color)
+        {
+            Memmory.Memset(offset + _buffer, color, (uint)length);
+        }
+
         public void Clear(uint c)
         {
             Memmory.Memset(_buffer, c, (uint)(Width * Height));
