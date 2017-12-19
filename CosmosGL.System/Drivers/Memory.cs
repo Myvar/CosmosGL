@@ -6,7 +6,7 @@ using XSharp.Assembler;
 
 namespace CosmosGL.System.Drivers
 {
-    public unsafe class Memmory
+    public unsafe class Memory
     {
         [PlugMethod(Assembler = typeof(AsmCopyBytes))]
         public static void Memcpy(byte* dst, byte* src, int len) { }

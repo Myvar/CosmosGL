@@ -35,7 +35,7 @@ namespace CosmosGL.System.Graphics
 
         public void WriteToScreen()
         {
-            Memmory.Memcpy((uint*) 0xE0000000, _buffer, Width * Height);
+            Memory.Memcpy((uint*) 0xE0000000, _buffer, Width * Height);
         }
 
         public void SetScanLine(int offset, int length, uint color)
@@ -45,7 +45,7 @@ namespace CosmosGL.System.Graphics
 
         public void Clear(uint c)
         {
-            Memmory.Memset(_buffer, c, (uint)(Width * Height));
+            Memory.Memset(_buffer, c, (uint)(Width * Height));
         }
     }
 }
