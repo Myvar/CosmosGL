@@ -40,7 +40,7 @@ namespace CosmosGL.System.Graphics
 
         public void SetScanLine(int offset, int length, uint color)
         {
-            Memmory.Memset(offset + _buffer, color, (uint)length);
+            Memory.Memset(offset + _buffer, color, (uint)length);
         }
 
         public void Clear(uint c)
