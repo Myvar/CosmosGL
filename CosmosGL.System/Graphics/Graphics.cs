@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CosmosGL.System.Graphics.Rasterizing;
+using CosmosGL.System.Imaging;
 using PolyPartition;
 
 namespace CosmosGL.System.Graphics
@@ -151,9 +152,15 @@ namespace CosmosGL.System.Graphics
 
         #region Draw
 
-        public void DrawImage()
+        public void DrawImage(int x, int y, Image img)
         {
-            /* TODO */
+            for (int x1 = 0; x1 < img.Width; x1++)
+            {
+                for (int y1 = 0; y1 < img.Height; y1++)
+                {
+                    SetPixel(x + x1, y + y1, img.GetPixel(x1,y1));
+                }
+            }
         }
 
         #endregion
@@ -375,34 +382,34 @@ namespace CosmosGL.System.Graphics
 
         public void FillTriangle(int x, int y, Point v0, Point v1, Point v2, Color c)
         {
-            /*  x = (int) ((float) x * Scale.X);
-              y = (int) ((float) y * Scale.Y);
+            x = (int) ((float) x * Scale.X);
+            y = (int) ((float) y * Scale.Y);
 
-              x += Transform.X;
-              y += Transform.Y;
-              */
+            x += Transform.X;
+            y += Transform.Y;
+
             //
             v0.X = (int) ((float) v0.X * Scale.X);
-              v0.Y = (int) ((float) v0.Y * Scale.Y);
+            v0.Y = (int) ((float) v0.Y * Scale.Y);
 
-              v0.X += Transform.X;
-              v0.Y += Transform.Y;
-
-
-              //
-              v1.X = (int) ((float) v1.X * Scale.X);
-              v1.Y = (int) ((float) v1.Y * Scale.Y);
-
-              v1.X += Transform.X;
-              v1.Y += Transform.Y;
+            v0.X += Transform.X;
+            v0.Y += Transform.Y;
 
 
-              //
-              v2.X = (int) ((float) v2.X * Scale.X);
-              v2.Y = (int) ((float) v2.Y * Scale.Y);
+            //
+            v1.X = (int) ((float) v1.X * Scale.X);
+            v1.Y = (int) ((float) v1.Y * Scale.Y);
 
-              v2.X += Transform.X;
-              v2.Y += Transform.Y;
+            v1.X += Transform.X;
+            v1.Y += Transform.Y;
+
+
+            //
+            v2.X = (int) ((float) v2.X * Scale.X);
+            v2.Y = (int) ((float) v2.Y * Scale.Y);
+
+            v2.X += Transform.X;
+            v2.Y += Transform.Y;
 
 
             var scanBuffer = new List<MinMaxPair>();

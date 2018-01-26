@@ -89,5 +89,10 @@
              /* var macTime = GetUint32() * 0x100000000 + GetUint32();
              return new DateTime(macTime, DateTimeKind.Utc);*/
          }
+
+        public char GetChar()
+        {
+            return (char) GetUint8();
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 using Cosmos.HAL;
 using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
+using CosmosGL.System.Images;
+using CosmosGL.System.Imaging;
 using Sys = Cosmos.System;
 
 namespace TestKernel
@@ -68,7 +70,7 @@ namespace TestKernel
                 new Point(350, 300),
                 new Point(350, 350),
             }, Colors.Red);
-            
+
             g.FillPolygon(new Point[]
             {
                 new Point(300, 300),
@@ -87,8 +89,11 @@ namespace TestKernel
 
 
             g.FillRectangle(10, 20, 50, 50, Colors.Green);
-
-            FontTest.Draw(ref g);
+            // FontTest.Draw(ref g);
+            
+            //var img = Image.FromBytes(MyvarLogoPng.Myvar_LogoPng, "png");
+            var img = Image.FromBytes(MyvarLogoPPM.Myvar_LogoPPM, "ppm");
+            g.DrawImage(10, 10, img);
 
             Canvas.WriteToScreen();
         }
