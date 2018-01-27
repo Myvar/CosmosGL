@@ -16,6 +16,7 @@ namespace TestKernel
         public VbeScreen Screen = new VbeScreen();
         public Canvas Canvas = new Canvas(800, 600);
         public SdfFont terminus;
+
         protected override void BeforeRun()
         {
             Console.Clear();
@@ -33,6 +34,16 @@ namespace TestKernel
 
             terminus = new SdfFont(Terminus.Terminus_fnt,
                 Image.FromBytes(Terminus.Terminus_ppm, "ppm"));
+
+            
+            g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
+            Canvas.WriteToScreen();
+            g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
+            Canvas.WriteToScreen();
+            g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
+            Canvas.WriteToScreen();
+            g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);
+            Canvas.WriteToScreen();
         }
 
 
@@ -53,23 +64,17 @@ namespace TestKernel
 
             _frames++;
 
-            var g = new Graphics(Canvas);
+            //  var g = new Graphics(Canvas);
 
-            if (RTC.Second > 30 && !flag)
-            {
-                flag = true;
-                g.Clear(Colors.White);
-                g.DrawString(10, 10, "FPS: " + _fps, 50f, terminus, Colors.Black);
-                g.DrawString(10, 10 + 17, "Frames: " + _frames, 50f, terminus, Colors.Cyan);
-                g.DrawString(10, 10 + 17 + 17, "DeltaT: " + _deltaT, 50f, terminus, Colors.Orange);
-                g.DrawString(10, 10 + 17 + 17 + 17, "RTC.Second: " + RTC.Second, 50f, terminus, Colors.Purple);
-            }
+            //g.Clear(Colors.White);
+
+
             /*
             //var img = Image.FromBytes(MyvarLogoPng.Myvar_LogoPng, "png");
             var img = Image.FromBytes(MyvarLogoPPM.Myvar_LogoPPM, "ppm");
             g.DrawImage(10, 10, img);*/
-                        
-            Canvas.WriteToScreen();
+
+            // Canvas.WriteToScreen();
         }
     }
 }

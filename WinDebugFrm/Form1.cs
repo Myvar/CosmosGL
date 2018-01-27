@@ -29,17 +29,21 @@ namespace WinDebugFrm
             var canvas = new FormCanvas(Width, Height);
 
             var g = new Graphics(canvas);
-            g.Clear(Colors.DarkCyan);
-            
+            g.Clear(Colors.White);
 
-           // var img = Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm");
-          //  g.DrawImage(10, 10, img);
+
+            // var img = Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm");
+            //  g.DrawImage(10, 10, img);
 
 
             var terminus = new SdfFont(File.ReadAllText("Terminus.fnt"),
                 Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm"));
 
-            g.DrawString(10, 10, "Hello World", 50f, terminus, Colors.Black);
+            g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
+            g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
+            g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
+            g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);
+            //g.DrawString(10, 100, "Hello World", 10f, terminus, Colors.Black);
 
             e.Graphics.Clear(System.Drawing.Color.White);
             e.Graphics.DrawImageUnscaled(canvas.Bitmap, 0, 0);

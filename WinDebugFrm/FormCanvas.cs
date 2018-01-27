@@ -37,13 +37,15 @@ namespace WinDebugFrm
 
         public CosmosGL.System.Graphics.Color GetPixel(int x, int y)
         {
+            if(x < 0 || x >= Width || y < 0 || y >= Height) return new CosmosGL.System.Graphics.Color(0,0,0,0);
             var z = Bitmap.GetPixel(x, y);
+           
             return new CosmosGL.System.Graphics.Color(z.R, z.G, z.B, z.A);
         }
 
         public void SetPixel(int x, int y, CosmosGL.System.Graphics.Color c)
         {
-            if (x >= 0 && y >= 0)
+            if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 Bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B));
             }
