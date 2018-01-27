@@ -16,7 +16,8 @@ namespace CosmosGL.System.Graphics
         private bool ClipingIsInclude { get; set; }
         private PointF Scale { get; set; } = new PointF(1, 1);
         private Point Transform { get; set; } = new Point(0, 0);
-        private Point Offset { get; set; } = new Point(0, 0);
+
+        public Point Offset { get; set; } = new Point(0, 0);
 
         public int Height { get; set; }
         public int Width { get; set; }
