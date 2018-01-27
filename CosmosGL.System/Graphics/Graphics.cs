@@ -650,7 +650,7 @@ namespace CosmosGL.System.Graphics
             x += Transform.X;
             y += Transform.Y;
 
-            for (int height = y; height < h; height++)
+            for (int height = y; height < y + h; height++)
             {
                 _canvas.SetScanLine(x + (height * _canvas.Width), w, (uint) c.ToHex());
                 /*  for (int width = x; width < w; width++)
