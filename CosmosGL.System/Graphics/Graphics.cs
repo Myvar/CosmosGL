@@ -42,6 +42,19 @@ namespace CosmosGL.System.Graphics
             return (rb & 0xff00ff) | (g & 0xff00);
         }
 
+        private byte BlendChanel(byte r, float amount)
+        {
+            return (byte) ((r * amount) + r * (1 - amount));
+        }
+
+        private Color Blend(Color color, Color backColor, float amount)
+        {
+            byte r = (byte) ((color.R * amount) + backColor.R * (1 - amount));
+            byte g = (byte) ((color.G * amount) + backColor.G * (1 - amount));
+            byte b = (byte) ((color.B * amount) + backColor.B * (1 - amount));
+            return new Color(r, g, b);
+        }
+
         private void SetPixel(int x, int y, Color c)
         {
             x = (int) ((float) x * Scale.X);
@@ -158,7 +171,7 @@ namespace CosmosGL.System.Graphics
             {
                 for (int y1 = 0; y1 < img.Height; y1++)
                 {
-                    SetPixel(x + x1, y + y1, img.GetPixel(x1,y1));
+                    SetPixel(x + x1, y + y1, img.GetPixel(x1, y1));
                 }
             }
         }
@@ -167,9 +180,73 @@ namespace CosmosGL.System.Graphics
 
         #region Strings
 
-        public void DrawString()
+        private float Clamp(float valueToClamp, float min, float max)
         {
-            /* TODO */
+            if (valueToClamp < min)
+            {
+                return min;
+            }
+
+            if (valueToClamp > max)
+            {
+                return max;
+            }
+
+            return valueToClamp;
+        }
+
+        private float Smoothstep(float edge0, float edge1, float x)
+        {
+            var t = Clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+            return t * t * (3.0f - 2.0f * t);
+        }
+
+        private byte Cftb(float f) => (byte) Math.Floor(f >= 1.0f ? 255f : f * 256.0f);
+
+        public void DrawString(int x, int y, string str, float size, SdfFont font, Color txtcolor)
+        {
+            float width = 0.4f;
+            float edge = 0.2f;
+
+            float borderWidth = 0.2f;
+            float borderEdge = 0.1f;
+
+            // float sz = 1.0f / (17f / size);
+
+            // ScaleTransform(sz, sz);
+
+            foreach (var c in str)
+            {
+                var chr = font.GetChar(c);
+
+                for (int x1 = chr.X; x1 < chr.X + chr.Width; x1++)
+                {
+                    for (int y1 = chr.Y; y1 < chr.Y + chr.Height; y1++)
+                    {
+                        float distance = 1.0f - (font.AtlasImage.GetPixel(x1, y1).R / 255f);
+                        float alpha = 1.0f - Smoothstep(width, width + edge, distance);
+
+                        float distance2 = 1.0f - (font.AtlasImage.GetPixel(x1, y1).R / 255f);
+                        float outlinealpha = 1.0f - Smoothstep(borderWidth, borderWidth + borderEdge, distance2);
+
+                        float overallAlpha = alpha + (1.0f - alpha) * outlinealpha;
+
+                        var color = txtcolor;
+
+                        if (overallAlpha != 1.0f)
+                        {
+                            var gpx = _canvas.GetPixel(x + x1 - chr.X + chr.Xoffset, y + y1 - chr.Y + chr.Yoffset);
+                            color = Blend(txtcolor, gpx, overallAlpha);
+                        }
+
+                        color.A = 255;
+
+                        SetPixel(x + x1 - chr.X + chr.Xoffset, y + y1 - chr.Y + chr.Yoffset, color);
+                    }
+                }
+
+                x += chr.Xadvance;
+            }
         }
 
         public void MeasureString()

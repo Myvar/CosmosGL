@@ -15,7 +15,7 @@ namespace TestKernel
     {
         public VbeScreen Screen = new VbeScreen();
         public Canvas Canvas = new Canvas(800, 600);
-
+        public SdfFont terminus;
         protected override void BeforeRun()
         {
             Console.Clear();
@@ -30,12 +30,17 @@ namespace TestKernel
 
 
             Canvas.WriteToScreen();
+
+            terminus = new SdfFont(Terminus.Terminus_fnt,
+                Image.FromBytes(Terminus.Terminus_ppm, "ppm"));
         }
 
 
         int _frames = 0;
         int _fps = 0;
         int _deltaT = 0;
+
+        private bool flag = false;
 
         protected override void Run()
         {
@@ -49,52 +54,21 @@ namespace TestKernel
             _frames++;
 
             var g = new Graphics(Canvas);
-            g.Clear(Colors.DarkCyan);
 
-            g.DrawLine(20, 30, 70, 60, Colors.Blue);
-            g.DrawEllipse(40, 40, 20, 40, Colors.DarkKhaki);
-            g.DrawRectangle(10, 10, 100, 100, Colors.BlanchedAlmond);
-
-            g.FillEllipse(100, 100, 20, 40, Colors.DarkSeaGreen);
-
-            g.DrawPath(new Point[]
+            if (RTC.Second > 30 && !flag)
             {
-                new Point(200, 220),
-                new Point(250, 210),
-                new Point(300, 260),
-            }, Colors.Aqua);
-
-            g.DrawPolygon(new Point[]
-            {
-                new Point(300, 300),
-                new Point(350, 300),
-                new Point(350, 350),
-            }, Colors.Red);
-
-            g.FillPolygon(new Point[]
-            {
-                new Point(300, 300),
-                new Point(350, 300),
-                new Point(350, 350),
-            }, Colors.Beige);
-
-
-            g.FillPolygon(new Point[]
-            {
-                new Point(400, 300),
-                new Point(450, 300),
-                new Point(450, 450),
-                new Point(500, 450),
-            }, Colors.Beige);
-
-
-            g.FillRectangle(10, 20, 50, 50, Colors.Green);
-            // FontTest.Draw(ref g);
-            
+                flag = true;
+                g.Clear(Colors.White);
+                g.DrawString(10, 10, "FPS: " + _fps, 50f, terminus, Colors.Black);
+                g.DrawString(10, 10 + 17, "Frames: " + _frames, 50f, terminus, Colors.Cyan);
+                g.DrawString(10, 10 + 17 + 17, "DeltaT: " + _deltaT, 50f, terminus, Colors.Orange);
+                g.DrawString(10, 10 + 17 + 17 + 17, "RTC.Second: " + RTC.Second, 50f, terminus, Colors.Purple);
+            }
+            /*
             //var img = Image.FromBytes(MyvarLogoPng.Myvar_LogoPng, "png");
             var img = Image.FromBytes(MyvarLogoPPM.Myvar_LogoPPM, "ppm");
-            g.DrawImage(10, 10, img);
-
+            g.DrawImage(10, 10, img);*/
+                        
             Canvas.WriteToScreen();
         }
     }
