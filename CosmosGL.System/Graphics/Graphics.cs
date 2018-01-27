@@ -654,7 +654,7 @@ namespace CosmosGL.System.Graphics
 
             for (int height = y; height < y + h; height++)
             {
-                _canvas.SetScanLine(Offset.X + x + (height * (Offset.Y + _canvas.Width)), w, (uint) c.ToHex());
+                _canvas.SetScanLine(Offset.X + x + ((Offset.Y + height) * _canvas.Width), w, (uint) c.ToHex());
                 /*  for (int width = x; width < w; width++)
                  {
                           SetPixel(width, height, c);
