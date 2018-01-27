@@ -249,9 +249,18 @@ namespace CosmosGL.System.Graphics
             }
         }
 
-        public void MeasureString()
+        public Size MeasureString(string str, SdfFont font)
         {
-            /* TODO */
+            var p = new Size(0,0);
+            foreach (var c in str)
+            {
+                var chr = font.GetChar(c);
+
+                if (chr.Height > p.Height) p.Height = chr.Height;
+                p.Width += chr.Xadvance;
+            }
+
+            return p;
         }
 
         #endregion
