@@ -16,6 +16,7 @@ namespace CosmosGL.System.Graphics
         private bool ClipingIsInclude { get; set; }
         private PointF Scale { get; set; } = new PointF(1, 1);
         private Point Transform { get; set; } = new Point(0, 0);
+        private Point Offset { get; set; } = new Point(0, 0);
 
         public int Height { get; set; }
         public int Width { get; set; }
@@ -73,7 +74,7 @@ namespace CosmosGL.System.Graphics
                 {
                     if (Container.Intersects(x, y))
                     {
-                        _canvas.SetPixel(x, y, cn);
+                        _canvas.SetPixel(Offset.X + x, Offset.Y + y, cn);
                     }
                 }
                 else
@@ -84,20 +85,20 @@ namespace CosmosGL.System.Graphics
                         {
                             if (ClipRectangle.Intersects(x, y))
                             {
-                                _canvas.SetPixel(x, y, cn);
+                                _canvas.SetPixel(Offset.X + x, Offset.Y + y, cn);
                             }
                         }
                         else
                         {
                             if (!ClipRectangle.Intersects(x, y))
                             {
-                                _canvas.SetPixel(x, y, cn);
+                                _canvas.SetPixel(Offset.X + x, Offset.Y + y, cn);
                             }
                         }
                     }
                     else
                     {
-                        _canvas.SetPixel(x, y, cn);
+                        _canvas.SetPixel(Offset.X + x, Offset.Y + y, cn);
                     }
                 }
             }
@@ -107,7 +108,7 @@ namespace CosmosGL.System.Graphics
                 {
                     if (Container.Intersects(x, y))
                     {
-                        _canvas.SetPixel(x, y, c);
+                        _canvas.SetPixel(Offset.X + x, Offset.Y + y, c);
                     }
                 }
                 else
@@ -118,20 +119,20 @@ namespace CosmosGL.System.Graphics
                         {
                             if (ClipRectangle.Intersects(x, y))
                             {
-                                _canvas.SetPixel(x, y, c);
+                                _canvas.SetPixel(Offset.X + x, Offset.Y + y, c);
                             }
                         }
                         else
                         {
                             if (!ClipRectangle.Intersects(x, y))
                             {
-                                _canvas.SetPixel(x, y, c);
+                                _canvas.SetPixel(Offset.X + x, Offset.Y + y, c);
                             }
                         }
                     }
                     else
                     {
-                        _canvas.SetPixel(x, y, c);
+                        _canvas.SetPixel(Offset.X + x, Offset.Y + y, c);
                     }
                 }
             }
@@ -171,7 +172,7 @@ namespace CosmosGL.System.Graphics
             {
                 for (int y1 = 0; y1 < img.Height; y1++)
                 {
-                    SetPixel(x + x1, y + y1, img.GetPixel(x1, y1));
+                    SetPixel(Offset.X + x + x1, Offset.Y + y + y1, img.GetPixel(x1, y1));
                 }
             }
         }
@@ -211,30 +212,29 @@ namespace CosmosGL.System.Graphics
             float borderWidth = 0.0f;
             float borderEdge = 0.05f;
 
-             
 
             // ScaleTransform(sz, sz);
 
             var atlas = font.AtlasImage;
-            float sz = 1.0f / ((float)font.FontSize / (float)size);
+            float sz = 1.0f / ((float) font.FontSize / (float) size);
 
-           // if (size != font.FontSize)
+            // if (size != font.FontSize)
             {
-                atlas = atlas.ResizeImage((int) ((float)atlas.Width * sz), (int) ((float)atlas.Height * sz));
+                atlas = atlas.ResizeImage((int) ((float) atlas.Width * sz), (int) ((float) atlas.Height * sz));
             }
 
             foreach (var c in str)
             {
                 var chr = font.GetChar(c).Clone();
 
-                chr.Width = (int) ((float)chr.Width * sz);
-                chr.Height = (int) ((float)chr.Height * sz);
-                chr.X = (int) ((float)chr.X * sz);
-                chr.Y = (int) ((float)chr.Y * sz);
-                chr.Xadvance = (int) ((float)chr.Xadvance * sz);
-                chr.Xoffset = (int) ((float)chr.Xoffset * sz);
-                chr.Yoffset = (int) ((float)chr.Yoffset * sz);
-                
+                chr.Width = (int) ((float) chr.Width * sz);
+                chr.Height = (int) ((float) chr.Height * sz);
+                chr.X = (int) ((float) chr.X * sz);
+                chr.Y = (int) ((float) chr.Y * sz);
+                chr.Xadvance = (int) ((float) chr.Xadvance * sz);
+                chr.Xoffset = (int) ((float) chr.Xoffset * sz);
+                chr.Yoffset = (int) ((float) chr.Yoffset * sz);
+
 
                 for (int x1 = chr.X; x1 < chr.X + chr.Width; x1++)
                 {
@@ -258,7 +258,8 @@ namespace CosmosGL.System.Graphics
 
                         color.A = 255;
 
-                        SetPixel(x + x1 - chr.X + chr.Xoffset, y + y1 - chr.Y + chr.Yoffset, color);
+                        SetPixel(Offset.X + x + x1 - chr.X + chr.Xoffset, Offset.Y + y + y1 - chr.Y + chr.Yoffset,
+                            color);
                     }
                 }
 
@@ -268,20 +269,20 @@ namespace CosmosGL.System.Graphics
 
         public Size MeasureString(string str, float size, SdfFont font)
         {
-            float sz = 1.0f / ((float)font.FontSize / (float)size);
+            float sz = 1.0f / ((float) font.FontSize / (float) size);
 
-            var p = new Size(0,0);
+            var p = new Size(0, 0);
             foreach (var c in str)
             {
                 var chr = font.GetChar(c).Clone();
 
-                chr.Width = (int)((float)chr.Width * sz);
-                chr.Height = (int)((float)chr.Height * sz);
-                chr.X = (int)((float)chr.X * sz);
-                chr.Y = (int)((float)chr.Y * sz);
-                chr.Xadvance = (int)((float)chr.Xadvance * sz);
-                chr.Xoffset = (int)((float)chr.Xoffset * sz);
-                chr.Yoffset = (int)((float)chr.Yoffset * sz);
+                chr.Width = (int) ((float) chr.Width * sz);
+                chr.Height = (int) ((float) chr.Height * sz);
+                chr.X = (int) ((float) chr.X * sz);
+                chr.Y = (int) ((float) chr.Y * sz);
+                chr.Xadvance = (int) ((float) chr.Xadvance * sz);
+                chr.Xoffset = (int) ((float) chr.Xoffset * sz);
+                chr.Yoffset = (int) ((float) chr.Yoffset * sz);
 
                 if (chr.Height > p.Height) p.Height = chr.Height;
                 p.Width += chr.Xadvance;
@@ -304,10 +305,10 @@ namespace CosmosGL.System.Graphics
             /* first half */
             for (x = 0, y = height, sigma = 2 * b2 + a2 * (1 - 2 * height); b2 * x <= a2 * y; x++)
             {
-                SetPixel(xc + x, yc + y, c);
-                SetPixel(xc - x, yc + y, c);
-                SetPixel(xc + x, yc - y, c);
-                SetPixel(xc - x, yc - y, c);
+                SetPixel(Offset.X + xc + x, Offset.Y + yc + y, c);
+                SetPixel(Offset.X + xc - x, Offset.Y + yc + y, c);
+                SetPixel(Offset.X + xc + x, Offset.Y + yc - y, c);
+                SetPixel(Offset.X + xc - x, Offset.Y + yc - y, c);
                 if (sigma >= 0)
                 {
                     sigma += fa2 * (1 - y);
@@ -319,10 +320,10 @@ namespace CosmosGL.System.Graphics
             /* second half */
             for (x = width, y = 0, sigma = 2 * a2 + b2 * (1 - 2 * width); a2 * y <= b2 * x; y++)
             {
-                SetPixel(xc + x, yc + y, c);
-                SetPixel(xc - x, yc + y, c);
-                SetPixel(xc + x, yc - y, c);
-                SetPixel(xc - x, yc - y, c);
+                SetPixel(Offset.X + xc + x, Offset.Y + yc + y, c);
+                SetPixel(Offset.X + xc - x, Offset.Y + yc + y, c);
+                SetPixel(Offset.X + xc + x, Offset.Y + yc - y, c);
+                SetPixel(Offset.X + xc - x, Offset.Y + yc - y, c);
                 if (sigma >= 0)
                 {
                     sigma += fb2 * (1 - x);
@@ -356,7 +357,7 @@ namespace CosmosGL.System.Graphics
             int numerator = longest >> 1;
             for (int i = 0; i <= longest; i++)
             {
-                SetPixel(x, y, c);
+                SetPixel(Offset.X + x, Offset.Y + y, c);
                 numerator += shortest;
                 if (!(numerator < longest))
                 {
@@ -570,7 +571,7 @@ namespace CosmosGL.System.Graphics
                  {
                      SetPixel(x + i, y + j, c);
                  }*/
-                _canvas.SetScanLine(((j + y) * _canvas.Width) + (minMaxPair.Min + x), minMaxPair.Max - minMaxPair.Min,
+                _canvas.SetScanLine(((j + y + Offset.Y ) * _canvas.Width) + (minMaxPair.Min + x + Offset.X), minMaxPair.Max - minMaxPair.Min,
                     (uint) c.ToHex());
             }
         }
@@ -652,7 +653,7 @@ namespace CosmosGL.System.Graphics
 
             for (int height = y; height < y + h; height++)
             {
-                _canvas.SetScanLine(x + (height * _canvas.Width), w, (uint) c.ToHex());
+                _canvas.SetScanLine(Offset.X + x + (height * (Offset.Y + _canvas.Width)), w, (uint) c.ToHex());
                 /*  for (int width = x; width < w; width++)
                  {
                           SetPixel(width, height, c);
