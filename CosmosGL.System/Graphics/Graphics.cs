@@ -206,34 +206,34 @@ namespace CosmosGL.System.Graphics
         public void DrawString(int x, int y, string str, float size, SdfFont font, Color txtcolor)
         {
             float width = 0.5f;
-            float edge = 0.1f;
+            float edge = 0.2f;
 
             float borderWidth = 0.0f;
-            float borderEdge = 0.1f;
+            float borderEdge = 0.05f;
 
              
 
             // ScaleTransform(sz, sz);
 
             var atlas = font.AtlasImage;
-            float sz = 1.0f / (font.FontSize / size);
+            float sz = 1.0f / ((float)font.FontSize / (float)size);
 
            // if (size != font.FontSize)
             {
-                atlas = atlas.ResizeImage((int) (atlas.Width * sz), (int) (atlas.Height * sz));
+                atlas = atlas.ResizeImage((int) ((float)atlas.Width * sz), (int) ((float)atlas.Height * sz));
             }
 
             foreach (var c in str)
             {
                 var chr = font.GetChar(c).Clone();
 
-                chr.Width = (int) (chr.Width * sz);
-                chr.Height = (int) (chr.Height * sz);
-                chr.X = (int) (chr.X * sz);
-                chr.Y = (int) (chr.Y * sz);
-                chr.Xadvance = (int) (chr.Xadvance * sz);
-                chr.Xoffset = (int) (chr.Xoffset * sz);
-                chr.Yoffset = (int) (chr.Yoffset * sz);
+                chr.Width = (int) ((float)chr.Width * sz);
+                chr.Height = (int) ((float)chr.Height * sz);
+                chr.X = (int) ((float)chr.X * sz);
+                chr.Y = (int) ((float)chr.Y * sz);
+                chr.Xadvance = (int) ((float)chr.Xadvance * sz);
+                chr.Xoffset = (int) ((float)chr.Xoffset * sz);
+                chr.Yoffset = (int) ((float)chr.Yoffset * sz);
                 
 
                 for (int x1 = chr.X; x1 < chr.X + chr.Width; x1++)
@@ -266,12 +266,22 @@ namespace CosmosGL.System.Graphics
             }
         }
 
-        public Size MeasureString(string str, SdfFont font)
+        public Size MeasureString(string str, float size, SdfFont font)
         {
+            float sz = 1.0f / ((float)font.FontSize / (float)size);
+
             var p = new Size(0,0);
             foreach (var c in str)
             {
-                var chr = font.GetChar(c);
+                var chr = font.GetChar(c).Clone();
+
+                chr.Width = (int)((float)chr.Width * sz);
+                chr.Height = (int)((float)chr.Height * sz);
+                chr.X = (int)((float)chr.X * sz);
+                chr.Y = (int)((float)chr.Y * sz);
+                chr.Xadvance = (int)((float)chr.Xadvance * sz);
+                chr.Xoffset = (int)((float)chr.Xoffset * sz);
+                chr.Yoffset = (int)((float)chr.Yoffset * sz);
 
                 if (chr.Height > p.Height) p.Height = chr.Height;
                 p.Width += chr.Xadvance;

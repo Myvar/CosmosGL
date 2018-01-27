@@ -39,10 +39,31 @@ namespace WinDebugFrm
             var terminus = new SdfFont(File.ReadAllText("Terminus.fnt"),
                 Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm"));
 
-            g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
-            g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
-            g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
-            g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);
+            /* g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
+             g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
+             g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
+             g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);*/
+            int x = 10;
+            int y = 10;
+
+            var s = "Hi";
+
+            for (int i = 1; i < 158; i++)
+            {
+                g.DrawString(x, y, s, i, terminus, Colors.Black);
+
+                var size = g.MeasureString(s, i, terminus);
+
+                y += size.Height + 2;
+
+                if (y + 50 > Height)
+                {
+                    y = 10;
+                    x += size.Width;
+                }
+            }
+
+
             //g.DrawString(10, 100, "Hello World", 10f, terminus, Colors.Black);
 
             e.Graphics.Clear(System.Drawing.Color.White);
@@ -52,10 +73,16 @@ namespace WinDebugFrm
         private void Form1_Load(object sender, EventArgs e)
         {
             DoubleBuffered = true;
+            WindowState = FormWindowState.Maximized;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            Update();
         }
     }
 }
