@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CosmosGL.System;
-using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
 
 namespace WinDebugFrm
@@ -15,7 +14,7 @@ namespace WinDebugFrm
     {
         public static void Draw(Graphics gr)
         {
-            var st = new Stopwatch();
+          /*  var st = new Stopwatch();
             st.Start();
 
             var f = new CGLF(Karla.Karla_cglf);
@@ -29,7 +28,7 @@ namespace WinDebugFrm
             int x = 0;
             int y = 0;
             int c = 0;
-            for (var index = 0; index <  1/*f.Glyphs.Count*/; index++)
+            for (var index = 0; index <  1; index++)
             {
                 var g = f.Glyphs[index];
                 var scale = 22f / f.UnitsPerEm;
@@ -55,7 +54,7 @@ namespace WinDebugFrm
             st.Stop();
 
             Debug.WriteLine(st.Elapsed.ToString());
-            st.Reset();
+            st.Reset();*/
         }
     }
 }

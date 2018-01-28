@@ -1,19 +1,11 @@
 ﻿#define WINDOWS
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CosmosGL.System;
-using CosmosGL.System.Fonts;
 using CosmosGL.System.Graphics;
 using CosmosGL.System.Imaging;
-using Point = CosmosGL.System.Graphics.Point;
 
 namespace WinDebugFrm
 {
@@ -32,22 +24,22 @@ namespace WinDebugFrm
             g.Clear(Colors.White);
 
 
-            // var img = Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm");
-            //  g.DrawImage(10, 10, img);
+           // var img = Image.FromBytes(File.ReadAllBytes("Myvar Logo Solid plain.ppm"), "ppm").ResizeImage(128, 128);
+           // g.DrawImage(10, 10, img);
 
 
-            var terminus = new SdfFont(File.ReadAllText("Terminus.fnt"),
-                Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm"));
+           var terminus = new SdfFont(File.ReadAllText("Terminus.fnt"),
+                 Image.FromBytes(File.ReadAllBytes("Terminus.ppm"), "ppm"));
 
-            /* g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
-             g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
-             g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
-             g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);*/
+            // g.DrawString(10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 14f, terminus, Colors.Black);
+             // g.DrawString(10, 25, "abcdefghijklmnopqrstuvwxyz", 14f, terminus, Colors.Black);
+            //  g.DrawString(10, 44, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 30f, terminus, Colors.Black);
+           //   g.DrawString(10, 74, "abcdefghijklmnopqrstuvwxyz", 30f, terminus, Colors.Black);
             int x = 10;
             int y = 10;
 
             var s = "Hi";
-
+            e.Graphics.Clear(System.Drawing.Color.White);
             for (int i = 1; i < 158; i++)
             {
                 g.DrawString(x, y, s, i, terminus, Colors.Black);
@@ -61,8 +53,13 @@ namespace WinDebugFrm
                     y = 10;
                     x += size.Width;
                 }
-            }
 
+               
+                e.Graphics.DrawImageUnscaled(canvas.Bitmap, 0, 0);
+                e.Graphics.Flush();
+                Update();
+            }
+            
 
             //g.DrawString(10, 100, "Hello World", 10f, terminus, Colors.Black);
 
@@ -73,7 +70,7 @@ namespace WinDebugFrm
         private void Form1_Load(object sender, EventArgs e)
         {
             DoubleBuffered = true;
-            WindowState = FormWindowState.Maximized;
+            //  WindowState = FormWindowState.Maximized;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

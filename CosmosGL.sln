@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinDebugFrm", "WinDebugFrm\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGLFontConverter", "CGLFontConverter\CGLFontConverter.csproj", "{97C740F3-DD52-439E-9F5B-DE51E86EE5D3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Playground", "Playground", "{ECC279E9-D9FF-40E1-8450-5D2BF7DDE44C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benshmarks", "Benshmarks\Benshmarks.csproj", "{1F335391-EFE4-4C32-A505-7B57AE9CCA94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,9 +55,16 @@ Global
 		{97C740F3-DD52-439E-9F5B-DE51E86EE5D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97C740F3-DD52-439E-9F5B-DE51E86EE5D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97C740F3-DD52-439E-9F5B-DE51E86EE5D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F335391-EFE4-4C32-A505-7B57AE9CCA94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F335391-EFE4-4C32-A505-7B57AE9CCA94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F335391-EFE4-4C32-A505-7B57AE9CCA94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F335391-EFE4-4C32-A505-7B57AE9CCA94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F335391-EFE4-4C32-A505-7B57AE9CCA94} = {ECC279E9-D9FF-40E1-8450-5D2BF7DDE44C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC820A5-1919-4579-8EAF-B45FFC97A95E}

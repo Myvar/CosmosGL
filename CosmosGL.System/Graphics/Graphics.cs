@@ -37,11 +37,9 @@ namespace CosmosGL.System.Graphics
 
         private uint Blend(uint color1, uint color2, byte alpha)
         {
-            uint rb = color1 & 0xff00ff;
-            uint g = color1 & 0x00ff00;
-            rb += ((color2 & 0xff00ff) - rb) * alpha >> 8;
-            g += ((color2 & 0x00ff00) - g) * alpha >> 8;
-            return (rb & 0xff00ff) | (g & 0xff00);
+            uint rb = (color1 & 0xFF00FF) + (alpha * (color2 & 0xFF00FF)) >> 8;
+            uint g = (color1 & 0x00FF00) + (alpha * (color2 & 0x00FF00)) >> 8;
+            return (rb & 0xFF00FF) + (g & 0x00FF00);
         }
 
         private byte BlendChanel(byte r, float amount)
