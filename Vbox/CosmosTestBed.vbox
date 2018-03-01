@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{45c269cd-dfe8-47e3-a91b-a82e2e6bea91}" name="CosmosTestBed" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2018-03-01T20:12:12Z">
+  <Machine uuid="{45c269cd-dfe8-47e3-a91b-a82e2e6bea91}" name="CosmosTestBed" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2018-03-01T20:13:36Z">
     <MediaRegistry>
       <HardDisks>
         <HardDisk uuid="{ec6bcabd-4b83-4ef7-a166-910077121acb}" location="VirtualDrive.vhd" format="VHD" type="Normal"/>
