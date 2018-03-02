@@ -6,5 +6,8 @@ SECTIONS {
 	.text : { *(.text*)	}	
 	.data : { *(.data*) }
 	.bss : { *(.bss*) }
+	.symtab : { *(.symtab*) }
+	.shstrtab : { *(.shstrtab*) }
+	.strtab : { *(.strtab*) }
 	/DISCARD/ : {*(.eh_frame) *(.note*) *(.comment)}
 }

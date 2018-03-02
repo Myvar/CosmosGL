@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{45c269cd-dfe8-47e3-a91b-a82e2e6bea91}" name="CosmosTestBed" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2018-03-01T20:12:12Z">
+  <Machine uuid="{45c269cd-dfe8-47e3-a91b-a82e2e6bea91}" name="CosmosTestBed" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2018-03-02T12:44:55Z">
     <MediaRegistry>
       <HardDisks>
         <HardDisk uuid="{ec6bcabd-4b83-4ef7-a166-910077121acb}" location="VirtualDrive.vhd" format="VHD" type="Normal"/>
@@ -17,7 +17,7 @@
     </MediaRegistry>
     <ExtraData>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="524,123,800,642"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="714,122,800,642"/>
     </ExtraData>
     <Hardware>
       <CPU>
@@ -42,7 +42,7 @@
       </Network>
       <AudioAdapter driver="DirectSound" enabled="true" enabledIn="false"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="en_US" timestamp="1519935132740973900" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="en_US" timestamp="1519990378008886700" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>
