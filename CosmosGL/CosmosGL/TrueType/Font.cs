@@ -8,6 +8,7 @@ namespace CosmosGL.TrueType
     public unsafe class Font
     {
         public HeadTable Head { get; set; }
+        public CharacterMap CharacterMap { get; set; }
 
         public Font(byte[] file)
         {
@@ -15,13 +16,13 @@ namespace CosmosGL.TrueType
             {
                 var fd = new FontDirectory(data);
 
-                var offsetbase = (uint) data + sizeof(FontDirectory.OffsetSubtable);
+                var offsetbase = (long) data +  sizeof(FontDirectory.OffsetSubtable);
                 var offset = offsetbase;
 
                 for (int i = 0; i < fd.NumTables; i++)
                 {
                     var td = new TableDirectory((void*) (offset));
-                    offset += sizeof(TableDirectory.OffsetSubtable);
+                    offset +=  sizeof(TableDirectory.TableDirectoryStruct);
 
                     /*
                      * head - font header
@@ -34,8 +35,10 @@ namespace CosmosGL.TrueType
                     switch (td.Id)
                     {
                         case "head":
-                            Head = new HeadTable((void*)(offsetbase + td.Offset));
-                            Console.WriteLine(Head.Flags);
+                            Head = new HeadTable((void*) ((long)data + td.Offset));
+                            break;
+                        case "cmap":
+                            CharacterMap = new CharacterMap((void*)((long)data + td.Offset));
                             break;
                     }
                 }

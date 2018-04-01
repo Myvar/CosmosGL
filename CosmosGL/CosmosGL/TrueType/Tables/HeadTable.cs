@@ -10,27 +10,27 @@ namespace CosmosGL.TrueType.Tables
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
         public struct HeadTableStruct
         {
-            [FieldOffset(0)] public short version;
-            [FieldOffset(2)] public short fontRevision;
-            [FieldOffset(4)] public uint checkSumAdjustment;
-            [FieldOffset(8)] public uint magicNumber;
-            [FieldOffset(12)] public ushort flags;
-            [FieldOffset(14)] public ushort unitsPerEm;
-            [FieldOffset(16)] public long created;
-            [FieldOffset(24)] public long modified;
-            [FieldOffset(32)] public short xMin;
-            [FieldOffset(34)] public short yMin;
-            [FieldOffset(36)] public short xMax;
-            [FieldOffset(38)] public short yMax;
-            [FieldOffset(40)] public ushort macStyle;
-            [FieldOffset(42)] public ushort lowestRecPPEM;
-            [FieldOffset(44)] public short fontDirectionHint;
-            [FieldOffset(46)] public short indexToLocFormat;
-            [FieldOffset(48)] public short glyphDataFormat;
+            [FieldOffset(0)] public uint version;
+            [FieldOffset(4)] public uint fontRevision;
+            [FieldOffset(8)] public uint checkSumAdjustment;
+            [FieldOffset(12)] public uint magicNumber;
+            [FieldOffset(16)] public ushort flags;
+            [FieldOffset(18)] public ushort unitsPerEm;
+            [FieldOffset(20)] public long created;
+            [FieldOffset(28)] public long modified;
+            [FieldOffset(36)] public short xMin;
+            [FieldOffset(38)] public short yMin;
+            [FieldOffset(40)] public short xMax;
+            [FieldOffset(42)] public short yMax;
+            [FieldOffset(44)] public ushort macStyle;
+            [FieldOffset(46)] public ushort lowestRecPPEM;
+            [FieldOffset(48)] public short fontDirectionHint;
+            [FieldOffset(30)] public short indexToLocFormat;
+            [FieldOffset(32)] public short glyphDataFormat;
         }
 
-        public short Version { get; set; }
-        public short FontRevision { get; set; }
+        public uint Version { get; set; }
+        public uint FontRevision { get; set; }
         public uint CheckSumAdjustment { get; set; }
         public uint MagicNumber { get; set; }
         public ushort Flags { get; set; }

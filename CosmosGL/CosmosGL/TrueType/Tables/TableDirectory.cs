@@ -8,7 +8,7 @@ namespace CosmosGL.TrueType.Tables
     public unsafe class TableDirectory
     {
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
-        public struct OffsetSubtable
+        public struct TableDirectoryStruct
         {
             [FieldOffset(0)] public byte Id0;
             [FieldOffset(1)] public byte Id1;
@@ -26,7 +26,7 @@ namespace CosmosGL.TrueType.Tables
 
         public TableDirectory(void* ptr)
         {
-            var x = (OffsetSubtable*) ptr;
+            var x = (TableDirectoryStruct*) ptr;
             Id = $"{(char) x->Id0}{(char) x->Id1}{(char) x->Id2}{(char) x->Id3}";
             CheckSum = EndianUtils.SwapEndian(x->checkSum);
             Offset = EndianUtils.SwapEndian(x->offset);
