@@ -74,7 +74,8 @@ namespace CosmosGL.TrueType
 
                 for (var i = 0; i < 150; i++)
                 {
-                    Glyphs[i] = new Glyph((void*) ((long) data + glyfOffset + glyfOffsets[i]));
+                    var maped = CharacterMap.Index[i];
+                    Glyphs[i] = new Glyph((void*) ((long) data + glyfOffset + glyfOffsets[maped]));
                 }
             }
         }

@@ -108,7 +108,11 @@ namespace CosmosGL.TrueType.Tables
 
             foreach (var contourPoint in cp)
             {
-                if (contourPoint.Values.Count != 0) Points.Add(new Point(contourPoint["x"], contourPoint["y"]));
+                if (contourPoint.Values.Count != 0)
+                    Points.Add(new Point(contourPoint["x"], contourPoint["y"])
+                    {
+                        Z = contourPoint.OnCurve ? 1 : 0
+                    });
             }
         }
 
