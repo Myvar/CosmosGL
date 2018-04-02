@@ -25,7 +25,7 @@ namespace TestKernel
             Console.Clear();
 
             var f = new Font(Karla.Karla_Regular_ttf);
-            
+            Console.WriteLine(f.Glyphs[(byte)'A'].Points.Count);
 
             /*  _deltaT = RTC.Second;
   
